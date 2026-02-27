@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
   <title>Clínica Médica</title>
   <style>
 :root{--bg:#050a14;--bg-2:#0a1226;--card:#111b33;--muted:#8ba1c2;--text:#f1f5f9;--primary:#d4af37;--primary-2:#f3cf55;--accent:#1a2a47;--accent-2:#243659;--danger:#ef4444;--danger-2:#b91c1c;--border:#2a4069;--success:#10b981;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:16px;--spacing-lg:24px;--spacing-xl:32px;--font-size-sm:12px;--font-size-md:14px;--font-size-lg:16px;--font-size-xl:20px;--font-size-xxl:26px}
@@ -400,8 +401,8 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         else if(p==="cadastros") { navigationModule.show("section-cadastros"); pacienteModule.initCadastros(); }
         else if(p==="plano") { navigationModule.show("section-plano"); dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta); }
         else if(p==="agendamento") { navigationModule.show("section-agendamento"); agendamentoModule.init(); }
-        else if(p==="financeiro") { navigationModule.show("section-financeiro"); loadPay().then(renderPay); }
-        else if(p==="relatorios") { navigationModule.show("section-relatorios"); loadKPIs(); }
+        else if(p==="financeiro") { navigationModule.show("section-financeiro"); financeiroModule.init(); }
+        else if(p==="relatorios") { navigationModule.show("section-relatorios"); relatoriosModule.init(); }
         else if(p==="cadastro") navigationModule.show("section-cadastro")
         else if(p==="login") navigationModule.show("section-login")
         else { navigationModule.show("section-dashboard"); dashboardModule.init(); }
@@ -430,7 +431,11 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         const { data, error } = await supabase.from("pacientes").select("*").order("id",{ascending:false}); 
         if (error) {
           console.error("Erro ao buscar pacientes:", error);
-          uiUtilityModule.toast("Erro ao carregar pacientes.");
+          if (error.code === '42703') { // Undefined column
+            uiUtilityModule.toast("Erro: Colunas faltando no banco de dados. Execute o script SQL.");
+          } else {
+            uiUtilityModule.toast("Erro ao carregar pacientes: " + error.message);
+          }
           return [];
         }
         return data||[]; 
@@ -487,11 +492,43 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
       if(pacienteForm) pacienteForm.addEventListener("submit", async e=>{
         e.preventDefault();
         const fd=new FormData(pacienteForm);
-        const id=fd.get("id");
-        const body=Object.fromEntries(fd.entries());
-        if(body.planoMeses) body.planoMeses = parseInt(body.planoMeses);
-        const { error } = id ? await supabase.from("pacientes").update(body).eq("id",id) : await supabase.from("pacientes").insert([body]);
-        if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Paciente salvo"); pacienteForm.reset(); initCadastros(); dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta); }
+        const rawId=fd.get("id");
+        const id = rawId ? rawId.trim() : "";
+        const body = Object.fromEntries(fd.entries());
+        
+        // --- STRICT SANITIZATION ---
+        // Remove empty strings to prevent DB errors (UUID, Date, Integer)
+        Object.keys(body).forEach(key => {
+          if (typeof body[key] === 'string' && body[key].trim() === "") {
+            body[key] = null;
+          }
+        });
+
+        // Ensure ID is completely removed if null/empty
+        if(!body.id) delete body.id;
+        
+        // Handle integer fields explicitly
+        if(body.planoMeses) {
+          body.planoMeses = parseInt(body.planoMeses);
+        }
+
+        try {
+          const { error } = id ? await supabase.from("pacientes").update(body).eq("id",id) : await supabase.from("pacientes").insert([body]);
+          if(error) throw error;
+          
+          uiUtilityModule.toast("Paciente salvo com sucesso!"); 
+          pacienteForm.reset(); 
+          document.querySelector('input[name="id"]').value = ""; // Ensure hidden ID is cleared
+          initCadastros(); 
+          dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta);
+        } catch (err) {
+          console.error(err);
+          if (err.code === '22P02') { // Invalid text representation
+             uiUtilityModule.toast("Erro: Formato de dados inválido (verifique datas e números).");
+          } else {
+             uiUtilityModule.toast("Erro ao salvar: " + err.message);
+          }
+        }
       });
 
       if(resetPacienteBtn) resetPacienteBtn.addEventListener("click", ()=>{
@@ -560,7 +597,21 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
       if(formAg) formAg.addEventListener("submit", async e=>{
         e.preventDefault();
         const fd=new FormData(formAg);
-        const { error } = await supabase.from("agendamentos").insert([Object.fromEntries(fd.entries())]);
+        const body = Object.fromEntries(fd.entries());
+        
+        // --- STRICT SANITIZATION ---
+        Object.keys(body).forEach(key => {
+          if (typeof body[key] === 'string' && body[key].trim() === "") {
+            body[key] = null;
+          }
+        });
+
+        if (!body.paciente_id) {
+          uiUtilityModule.toast("Por favor, selecione um paciente.");
+          return;
+        }
+
+        const { error } = await supabase.from("agendamentos").insert([body]);
         if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Agendado!"); document.getElementById("modal").classList.add("hidden"); refreshCal(); }
       });
       if(novoAgendamentoBtn) novoAgendamentoBtn.addEventListener("click", ()=>document.getElementById("modal").classList.remove("hidden"));
@@ -662,34 +713,66 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
     // document.getElementById("novo-agendamento")?.addEventListener("click", ()=>document.getElementById("modal").classList.remove("hidden"));
     // document.getElementById("cancel-agendamento")?.addEventListener("click", ()=>document.getElementById("modal").classList.add("hidden"));
 
-    async function loadPay(){ const data = await dataServiceModule.fetchPagamentos(); return data||[]; }
-    function renderPay(list){ 
-      const tb = document.querySelector("#pagamentos-table tbody");
-      if(tb) tb.innerHTML = list.map(p=>`<tr><td>${p.consulta_id}</td><td>${p.convenio||"-"}</td><td>${p.procedimento}</td><td>R$ ${p.valor}</td><td>${new Date(p.criadoEm||Date.now()).toLocaleDateString()}</td></tr>`).join("");
-    }
-    document.getElementById("pagamento-form")?.addEventListener("submit", async e=>{
-      e.preventDefault();
-      const fd=new FormData(e.target);
-      const { error } = await supabase.from("pagamentos").insert([{...Object.fromEntries(fd.entries()), criadoEm:new Date().toISOString()}]);
-      if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Recebido!"); e.target.reset(); loadPay().then(renderPay); }
-    });
+    // --- Financeiro Module ---
+    const financeiroModule = (() => {
+      const form = document.getElementById("pagamento-form");
+      
+      async function loadPay(){ 
+        const data = await dataServiceModule.fetchPagamentos(); 
+        renderPay(data||[]); 
+      }
 
-    async function loadKPIs(){
-      const [pac, pay] = await Promise.all([dataServiceModule.fetchPacientes(), dataServiceModule.fetchPagamentos()]);
-      const total = (pay||[]).reduce((acc,v)=>acc+Number(v.valor),0);
-      const box = document.getElementById("kpis-rel");
-      if(box) box.innerHTML = `
-        <div class="card"><div class="small">Total Pacientes</div><div style="font-size:var(--font-size-xl)">${pac.length}</div></div>
-        <div class="card"><div class="small">Receita Total</div><div style="font-size:var(--font-size-xl);color:var(--success)">R$ ${total.toFixed(2)}</div></div>
-      `;
-    }
-    document.getElementById("export-csv")?.addEventListener("click", async ()=>{
-      const { data } = await supabase.from("pagamentos").select("*");
-      const csv = "Data,Descrição,Valor\n" + data.map(r=>`${r.criadoEm},${r.procedimento},${r.valor}`).join("\n");
-      const blob = new Blob([csv], {type:'text/csv'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a"); a.href=url; a.download="relatorio.csv"; a.click();
-    });
+      function renderPay(list){ 
+        const tb = document.querySelector("#pagamentos-table tbody");
+        if(tb) tb.innerHTML = list.map(p=>`<tr><td>${p.consulta_id||"-"}</td><td>${p.convenio||"-"}</td><td>${p.procedimento||"-"}</td><td>R$ ${p.valor}</td><td>${new Date(p.data||p.created_at||Date.now()).toLocaleDateString()}</td></tr>`).join("");
+      }
+
+      if(form) form.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(form);
+        const body = Object.fromEntries(fd.entries());
+        const payload = { ...body, data: new Date().toISOString() };
+        
+        const { error } = await supabase.from("pagamentos").insert([payload]);
+        if(error) uiUtilityModule.toast(error.message); 
+        else { 
+          uiUtilityModule.toast("Recebido!"); 
+          form.reset(); 
+          loadPay(); 
+        }
+      });
+
+      return {
+        init: loadPay
+      };
+    })();
+
+    // --- Relatorios Module ---
+    const relatoriosModule = (() => {
+      async function loadKPIs(){
+        const [pac, pay] = await Promise.all([dataServiceModule.fetchPacientes(), dataServiceModule.fetchPagamentos()]);
+        const total = (pay||[]).reduce((acc,v)=>acc+Number(v.valor),0);
+        const box = document.getElementById("kpis-rel");
+        if(box) box.innerHTML = `
+          <div class="card"><div class="small">Total Pacientes</div><div style="font-size:var(--font-size-xl)">${pac.length}</div></div>
+          <div class="card"><div class="small">Receita Total</div><div style="font-size:var(--font-size-xl);color:var(--success)">R$ ${total.toFixed(2)}</div></div>
+        `;
+      }
+
+      const exportBtn = document.getElementById("export-csv");
+      if(exportBtn) exportBtn.addEventListener("click", async ()=>{
+        const { data } = await supabase.from("pagamentos").select("*");
+        if(!data) return;
+        const csv = "Data,Descrição,Valor\n" + data.map(r=>`${r.data||r.created_at},${r.procedimento},${r.valor}`).join("\n");
+        const blob = new Blob([csv], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a"); a.href=url; a.download="relatorio.csv"; a.click();
+      });
+
+      return {
+        init: loadKPIs
+      };
+    })();
 
   </script>
 </body>
