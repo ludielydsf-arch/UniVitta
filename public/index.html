@@ -128,16 +128,16 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
           <div class="grid">
             <div class="field"><label>Nome</label><input name="nome" required></div>
             <div class="field"><label>Sobrenome</label><input name="sobrenome" required></div>
-            <div class="field"><label>Data de Nascimento</label><input type="date" name="dataNascimento" required></div>
+            <div class="field"><label>Data de Nascimento</label><input type="date" name="datanascimento" required></div>
             <div class="field"><label>Email</label><input type="email" name="email" required placeholder="email@exemplo.com"></div>
-            <div class="field"><label>Data de Adesão do Plano</label><input type="date" name="dataAdesaoPlano" required></div>
+            <div class="field"><label>Data de Adesão do Plano</label><input type="date" name="dataadesaoplano" required></div>
             <div class="field"><label>Telefone</label><input name="telefone" required placeholder="(XX) XXXXX-XXXX"></div>
             <div class="field"><label>Endereço</label><input name="endereco" required placeholder="Rua, Número, Bairro, Cidade, Estado"></div>
             <div class="field"><label>Documento (CPF/RG)</label><input name="documento" required placeholder="XXX.XXX.XXX-XX ou X.XXX.XXX"></div>
-            <div class="field"><label>Nº da Carteira Univitta</label><input name="numeroCarteira" placeholder="XXXX.XXXX.XXXX.XXXX"></div>
+            <div class="field"><label>Nº da Carteira Univitta</label><input name="numerocarteira" placeholder="XXXX.XXXX.XXXX.XXXX"></div>
             <div class="field">
               <label>Tempo Contratado (Plano)</label>
-              <select name="planoMeses">
+              <select name="planomeses">
                 <option value="">Selecione</option>
                 <option value="3">3 meses</option>
                 <option value="6">6 meses</option>
@@ -478,7 +478,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         tbody.innerHTML=""; 
         list.forEach(p=>{
           const tr=document.createElement("tr");
-          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.email}</td><td>${p.telefone}</td><td>${p.documento}</td><td>${p.numeroCarteira||"-"}</td><td>${p.planoMeses||"-"} meses</td><td><button data-id="${p.id}" class="edit-paciente">Editar</button> <button data-id="${p.id}" class="del-paciente danger">Excluir</button></td>`;
+          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.email}</td><td>${p.telefone}</td><td>${p.documento}</td><td>${p.numerocarteira||p.numeroCarteira||"-"}</td><td>${p.planomeses||p.planoMeses||"-"} meses</td><td><button data-id="${p.id}" class="edit-paciente">Editar</button> <button data-id="${p.id}" class="del-paciente danger">Excluir</button></td>`;
           tbody.appendChild(tr)
         }) 
       }
@@ -508,8 +508,8 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         if(!body.id) delete body.id;
         
         // Handle integer fields explicitly
-        if(body.planoMeses) {
-          body.planoMeses = parseInt(body.planoMeses);
+        if(body.planomeses) {
+          body.planomeses = parseInt(body.planomeses);
         }
 
         try {
@@ -551,10 +551,14 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         if(!tbody) return; 
         tbody.innerHTML=""; 
         list.forEach(p=>{
-          const dataAdesao = p.dataAdesaoPlano ? new Date(p.dataAdesaoPlano).toLocaleDateString("pt-BR") : "-";
-          const diaVenc = p.dataAdesaoPlano ? new Date(p.dataAdesaoPlano).getDate() : "-";
+          // Handle both camelCase and lowercase keys for compatibility
+          const dA = p.dataadesaoplano || p.dataAdesaoPlano;
+          const pM = p.planomeses || p.planoMeses;
+          
+          const dataAdesao = dA ? new Date(dA).toLocaleDateString("pt-BR") : "-";
+          const diaVenc = dA ? new Date(dA).getDate() : "-";
           const tr=document.createElement("tr");
-          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.documento}</td><td>${p.email||"-"}</td><td>${p.telefone||"-"}</td><td>${p.endereco||"-"}</td><td>${dataAdesao}</td><td>${p.planoMeses||"-"} meses</td><td>${diaVenc}</td>`;
+          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.documento}</td><td>${p.email||"-"}</td><td>${p.telefone||"-"}</td><td>${p.endereco||"-"}</td><td>${dataAdesao}</td><td>${pM||"-"} meses</td><td>${diaVenc}</td>`;
           tbody.appendChild(tr)
         }) 
       }
