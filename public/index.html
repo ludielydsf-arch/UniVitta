@@ -5,45 +5,48 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Clínica Médica</title>
   <style>
-:root{--bg:#0b1020;--bg-2:#0d1324;--card:#121a2b;--muted:#7a89a7;--text:#e7ecf7;--primary:#7dd3fc;--primary-2:#60a5fa;--accent:#1f2a44;--accent-2:#182237;--danger:#ef4444;--danger-2:#b91c1c;--border:#23314c;--success:#10b981}
+:root{--bg:#0b1020;--bg-2:#0d1324;--card:#121a2b;--muted:#7a89a7;--text:#e7ecf7;--primary:#7dd3fc;--primary-2:#60a5fa;--accent:#1f2a44;--accent-2:#182237;--danger:#ef4444;--danger-2:#b91c1c;--border:#23314c;--success:#10b981;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:16px;--spacing-lg:24px;--spacing-xl:32px;--font-size-sm:12px;--font-size-md:14px;--font-size-lg:16px;--font-size-xl:20px;--font-size-xxl:26px}
 [data-theme="light"]{--bg:#f6f7fb;--bg-2:#f1f3f9;--card:#ffffff;--muted:#51607b;--text:#0f172a;--primary:#2563eb;--primary-2:#1d4ed8;--accent:#f3f4f6;--accent-2:#e5e7eb;--danger:#ef4444;--danger-2:#b91c1c;--border:#e5e7eb;--success:#10b981}
 *{box-sizing:border-box}
-body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;margin:0;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%);color:var(--text)}
-.app{display:grid;grid-template-columns:260px 1fr;gap:16px;max-width:1400px;margin:0 auto;padding:20px}
-.sidebar{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:16px;height:calc(100vh - 40px);position:sticky;top:20px}
-.brand{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-2))}
-.theme-toggle{margin-left:auto;padding:8px 12px;border-radius:10px;background:var(--accent);color:var(--text);border:1px solid var(--border)}
-.nav{display:flex;flex-direction:column;gap:8px}
-.nav a{padding:10px 12px;border-radius:10px;text-decoration:none;color:var(--text);background:var(--accent);border:1px solid var(--border)}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;margin:0;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%);color:var(--text);line-height:1.5}
+.app{display:grid;grid-template-columns:260px 1fr;gap:var(--spacing-md);max-width:1400px;margin:0 auto;padding:var(--spacing-md)}
+.sidebar{background:var(--card);border:1px solid var(--border);border-radius:var(--spacing-md);box-shadow:0 10px 30px rgba(0,0,0,.25);padding:var(--spacing-md);height:calc(100vh - var(--spacing-xl));position:sticky;top:var(--spacing-md)}
+.brand{display:flex;align-items:center;gap:var(--spacing-sm);margin-bottom:var(--spacing-md)}
+.logo{width:36px;height:36px;border-radius:var(--spacing-xs);background:linear-gradient(135deg,var(--primary),var(--primary-2))}
+.theme-toggle{margin-left:auto;padding:var(--spacing-sm) var(--spacing-md);border-radius:var(--spacing-xs);background:var(--accent);color:var(--text);border:1px solid var(--border);font-size:var(--font-size-sm)}
+.nav{display:flex;flex-direction:column;gap:var(--spacing-xs)}
+.nav a{padding:var(--spacing-sm) var(--spacing-md);border-radius:var(--spacing-xs);text-decoration:none;color:var(--text);background:var(--accent);border:1px solid var(--border);transition:background .2s ease}
 .nav a:hover{background:var(--accent-2)}
-.logout{margin-top:auto}
-.content{display:flex;flex-direction:column;gap:16px;padding:0 4px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:24px}
-h1{margin:0 0 8px;font-size:26px}
-h2{margin:0 0 12px;font-size:20px;color:var(--muted)}
-.field{margin-bottom:12px}
-.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-.field input,.field textarea,.field select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--accent);color:var(--text);outline:none}
+.nav a.active{background:var(--primary);color:var(--text);font-weight:600}
+.logout{margin-top:var(--spacing-md)}
+.content{display:flex;flex-direction:column;gap:var(--spacing-md);padding:0 var(--spacing-xs)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--spacing-md);box-shadow:0 10px 30px rgba(0,0,0,.25);padding:var(--spacing-lg)}
+h1{margin:0 0 var(--spacing-sm);font-size:var(--font-size-xxl)}
+h2{margin:0 0 var(--spacing-md);font-size:var(--font-size-xl);color:var(--muted)}
+.field{margin-bottom:var(--spacing-md)}
+.field label{display:block;font-size:var(--font-size-sm);color:var(--muted);margin-bottom:var(--spacing-xs)}
+.field input,.field textarea,.field select{width:100%;padding:var(--spacing-sm) var(--spacing-md);border:1px solid var(--border);border-radius:var(--spacing-xs);background:var(--accent);color:var(--text);outline:none;font-size:var(--font-size-md);transition:border-color .2s ease}
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--primary)}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.row{display:flex;gap:var(--spacing-sm);align-items:center;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--spacing-md)}
 @media (max-width:980px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:static}.grid{grid-template-columns:1fr}}
-button{padding:10px 14px;border:0;border-radius:12px;background:linear-gradient(90deg,var(--primary) 0%,var(--primary-2) 100%);color:#fff;cursor:pointer;transition:.2s transform,.2s filter}
-button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+@media (max-width:768px){.grid{grid-template-columns:1fr}.row{flex-direction:column;align-items:flex-start}}
+button{padding:var(--spacing-sm) var(--spacing-md);border:0;border-radius:var(--spacing-xs);background:linear-gradient(90deg,var(--primary) 0%,var(--primary-2) 100%);color:#fff;cursor:pointer;transition:.2s transform,.2s filter;font-size:var(--font-size-md);font-weight:600}
+button:hover{transform:translateY(-2px);filter:brightness(1.1)}
 .secondary{background:var(--accent);color:var(--text);border:1px solid var(--border)}
 .danger{background:var(--danger)}
 .danger:hover{background:var(--danger-2)}
-table{width:100%;border-collapse:separate;border-spacing:0 8px;margin-top:12px}
-thead th{font-size:12px;color:var(--muted)}
-tbody tr{background:var(--accent);border:1px solid var(--border)}
-th,td{padding:12px 14px;text-align:left}
+table{width:100%;border-collapse:separate;border-spacing:0 var(--spacing-sm);margin-top:var(--spacing-md)}
+thead th{font-size:var(--font-size-sm);color:var(--muted);text-transform:uppercase;padding-bottom:var(--spacing-xs)}
+tbody tr{background:var(--accent);border:1px solid var(--border);border-radius:var(--spacing-xs);transition:background .2s ease}
+tbody tr:hover{background:var(--accent-2)}
+th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
 .hidden{display:none}
-.small{font-size:12px;color:var(--muted)}
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-.calendar-cell{background:var(--accent);border:1px solid var(--border);border-radius:12px;padding:8px}
-.calendar-date{font-size:12px;color:var(--muted);margin-bottom:6px}
-.toast{position:fixed;right:20px;bottom:20px;background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 14px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:999}
+.small{font-size:var(--font-size-sm);color:var(--muted)}
+.toast{position:fixed;right:var(--spacing-md);bottom:var(--spacing-md);background:var(--card);border:1px solid var(--border);color:var(--text);padding:var(--spacing-sm) var(--spacing-md);border-radius:var(--spacing-xs);box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:999}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--spacing-sm)}
+.calendar-cell{background:var(--accent);border:1px solid var(--border);border-radius:var(--spacing-xs);padding:var(--spacing-sm)}
+.calendar-date{font-size:var(--font-size-sm);color:var(--muted);margin-bottom:var(--spacing-xs)}
   </style>
 </head>
 <body>
@@ -71,10 +74,10 @@ th,td{padding:12px 14px;text-align:left}
       <form id="login-form">
         <div class="field"><label>Email</label><input type="email" name="email" required placeholder="seu@email.com"></div>
         <div class="field"><label>Senha</label><input type="password" name="senha" required placeholder="••••••••"></div>
-        <button class="primary" type="submit" style="width:100%">Entrar no Sistema</button>
+        <button class="primary" type="submit" style="width:100%; margin-top:var(--spacing-md)">Entrar no Sistema</button>
       </form>
-      <p class="small" style="text-align:center;margin-top:16px">Não possui acesso? <a id="link-cadastro" href="#cadastro">Solicite aqui</a></p>
-      <div id="msg"></div>
+      <p class="small" style="text-align:center;margin-top:var(--spacing-md)">Não possui acesso? <a id="link-cadastro" href="#cadastro">Solicite aqui</a></p>
+      <div id="msg" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
     </section>
 
     <section id="section-cadastro" class="card hidden">
@@ -86,17 +89,17 @@ th,td{padding:12px 14px;text-align:left}
         </div>
         <div class="field"><label>Email Profissional</label><input type="email" name="email" required></div>
         <div class="field"><label>Senha de Acesso</label><input type="password" name="senha" required></div>
-        <button class="primary" type="submit" style="width:100%">Finalizar Cadastro</button>
+        <button class="primary" type="submit" style="width:100%; margin-top:var(--spacing-md)">Finalizar Cadastro</button>
       </form>
-      <p class="small" style="text-align:center;margin-top:16px"><a href="#login">Voltar para o Login</a></p>
-      <div id="msg-cadastro"></div>
+      <p class="small" style="text-align:center;margin-top:var(--spacing-md)"><a href="#login">Voltar para o Login</a></p>
+      <div id="msg-cadastro" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
     </section>
 
     <section id="section-dashboard" class="hidden">
-      <div class="grid" id="dash-kpis" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="grid" id="dash-kpis" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:var(--spacing-md);">
         <!-- KPIs via JS -->
       </div>
-      <div class="grid" style="grid-template-columns: 2fr 1fr; margin-top: 16px;">
+      <div class="grid" style="grid-template-columns: 2fr 1fr; margin-top: var(--spacing-md);">
         <div class="card">
           <h2>Desempenho Mensal</h2>
           <canvas id="dash-chart" width="600" height="250" style="width:100%;height:250px"></canvas>
@@ -120,12 +123,12 @@ th,td{padding:12px 14px;text-align:left}
             <div class="field"><label>Nome</label><input name="nome" required></div>
             <div class="field"><label>Sobrenome</label><input name="sobrenome" required></div>
             <div class="field"><label>Data de Nascimento</label><input type="date" name="dataNascimento" required></div>
-            <div class="field"><label>Email</label><input type="email" name="email" required></div>
-            <div class="field"><label>Telefone</label><input name="telefone" required></div>
-            <div class="field"><label>Endereço</label><input name="endereco" required></div>
+            <div class="field"><label>Email</label><input type="email" name="email" required placeholder="email@exemplo.com"></div>
+            <div class="field"><label>Telefone</label><input name="telefone" required placeholder="(XX) XXXXX-XXXX"></div>
+            <div class="field"><label>Endereço</label><input name="endereco" required placeholder="Rua, Número, Bairro, Cidade, Estado"></div>
             <div class="field"><label>Data de Adesão do Plano</label><input type="date" name="dataAdesaoPlano" required></div>
-            <div class="field"><label>Documento (CPF/RG)</label><input name="documento" required></div>
-            <div class="field"><label>Nº da Carteira Univitta</label><input name="numeroCarteira"></div>
+            <div class="field"><label>Documento (CPF/RG)</label><input name="documento" required placeholder="XXX.XXX.XXX-XX ou X.XXX.XXX"></div>
+            <div class="field"><label>Nº da Carteira Univitta</label><input name="numeroCarteira" placeholder="XXXX.XXXX.XXXX.XXXX"></div>
             <div class="field">
               <label>Tempo Contratado (Plano)</label>
               <select name="planoMeses">
@@ -135,7 +138,7 @@ th,td{padding:12px 14px;text-align:left}
               </select>
             </div>
           </div>
-          <div class="row">
+          <div class="row" style="margin-top:var(--spacing-md)">
             <button class="primary" type="submit">Salvar Paciente</button>
             <button class="secondary" type="button" id="reset-paciente">Limpar / Novo</button>
           </div>
@@ -144,18 +147,18 @@ th,td{padding:12px 14px;text-align:left}
           <table id="pacientes-table"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Documento</th><th>Carteira</th><th>Plano</th><th>Ações</th></tr></thead><tbody></tbody></table>
         </div>
       </div>
-      <div id="msg-dashboard"></div>
+      <div id="msg-dashboard" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
     </section>
 
     <section id="section-plano" class="hidden">
       <div class="card">
-        <div class="brand" style="margin-bottom:20px">
+        <div class="brand" style="margin-bottom:var(--spacing-md)">
           <div class="logo" style="background:linear-gradient(135deg, #10b981, #059669)"></div>
           <h2>Painel Plano Univitta</h2>
         </div>
         <div style="overflow-x:auto">
           <table id="plano-table">
-            <thead><tr><th>Paciente Completo</th><th>Documento</th><th>Data Adesão</th><th>Tempo Contratado</th><th>Dia Vencimento</th></tr></thead>
+            <thead><tr><th>Paciente Completo</th><th>Documento</th><th>Email</th><th>Telefone</th><th>Endereço</th><th>Data Adesão</th><th>Tempo Contratado</th><th>Dia Vencimento</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -164,7 +167,7 @@ th,td{padding:12px 14px;text-align:left}
 
     <section id="section-agendamento" class="hidden">
       <div class="card">
-        <div class="row" style="justify-content:space-between">
+        <div class="row" style="justify-content:space-between; margin-bottom:var(--spacing-md)">
           <h2>Agenda Clínica</h2>
           <div class="row">
             <select id="calendar-view">
@@ -179,7 +182,7 @@ th,td{padding:12px 14px;text-align:left}
           </div>
         </div>
       </div>
-      <div id="calendar" style="margin-top:16px"></div>
+      <div id="calendar" class="card" style="margin-top:var(--spacing-md)"></div>
       
       <div id="modal" class="card hidden" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;width:90%;max-width:600px;box-shadow:0 0 50px rgba(0,0,0,0.5)">
         <h2>Agendar Consulta</h2>
@@ -192,12 +195,12 @@ th,td{padding:12px 14px;text-align:left}
             <div class="field"><label>Hora</label><input type="time" name="hora" required></div>
             <div class="field"><label>Duração (min)</label><input type="number" name="duracao" value="30" required></div>
           </div>
-          <div class="row" style="margin-top:20px">
+          <div class="row" style="margin-top:var(--spacing-md)">
             <button class="primary" type="submit">Confirmar Agendamento</button>
             <button class="secondary" type="button" id="cancel-agendamento">Fechar</button>
           </div>
         </form>
-        <div id="msg-agendamento"></div>
+        <div id="msg-agendamento" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
       </div>
     </section>
 
@@ -211,10 +214,10 @@ th,td{padding:12px 14px;text-align:left}
             <div class="field"><label>Procedimento</label><input name="procedimento" placeholder="Ex: Consulta Geral"></div>
             <div class="field"><label>Valor (R$)</label><input type="number" step="0.01" name="valor" required></div>
           </div>
-          <div class="row"><button class="primary" type="submit">Registrar Recebimento</button></div>
+          <div class="row" style="margin-top:var(--spacing-md)"><button class="primary" type="submit">Registrar Recebimento</button></div>
         </form>
-        <div id="msg-financeiro"></div>
-        <div style="overflow-x:auto; margin-top:20px">
+        <div id="msg-financeiro" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
+        <div style="overflow-x:auto; margin-top:var(--spacing-md)">
           <table id="pagamentos-table"><thead><tr><th>Descrição</th><th>Método</th><th>Procedimento</th><th>Valor</th><th>Data</th></tr></thead><tbody></tbody></table>
         </div>
       </div>
@@ -223,11 +226,11 @@ th,td{padding:12px 14px;text-align:left}
     <section id="section-relatorios" class="hidden">
       <div class="card">
         <h2>Relatórios e Exportação</h2>
-        <div id="kpis-rel" class="grid" style="margin-bottom:20px"></div>
+        <div id="kpis-rel" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:var(--spacing-md); margin-bottom:var(--spacing-md)"></div>
         <div class="row">
           <button class="primary" id="export-csv">Baixar Relatório Financeiro (CSV)</button>
         </div>
-        <div id="msg-relatorios"></div>
+        <div id="msg-relatorios" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
       </div>
     </section>
 
@@ -240,215 +243,421 @@ th,td{padding:12px 14px;text-align:left}
     const supabase = createClient("https://xpyqwttguspnlwekgsve.supabase.co", "sb_publishable_VpuyIhNM4oK5kmm1WdhDBQ_0d8NioX0")
     
     const nav = document.getElementById("main-nav")
-    const logoutBtn = document.getElementById("logout")
+    // --- Auth Module ---
+    const authModule = (() => {
+      const logoutBtn = document.getElementById("logout");
+      const loginForm = document.getElementById("login-form");
+      const signupForm = document.getElementById("signup-form");
+
+      async function updateNav(){ 
+        const { data: { session } } = await supabase.auth.getSession(); 
+        if(session){
+          nav.style.display = "flex"; 
+          document.getElementById("section-login").classList.add("hidden"); // Hide login section
+          // If a session exists and the current route is login, cadastro, or empty, redirect to dashboard.
+          // This ensures the login section is hidden and a proper private section is shown.
+          if (location.hash === "#login" || location.hash === "#cadastro" || location.hash === "") {
+            navigationModule.routeTo("#dashboard");
+          }
+        } else {
+          nav.style.display = "none";
+          if(location.hash !== "#cadastro") navigationModule.show("section-login");
+        }
+      }
+
+      if(logoutBtn) logoutBtn.addEventListener("click", async ()=>{ await supabase.auth.signOut(); updateNav(); navigationModule.routeTo("#login"); });
+
+      if(loginForm) loginForm.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(loginForm);
+        const { error } = await supabase.auth.signInWithPassword({ email:fd.get("email"), password:fd.get("senha") });
+        if(error) { uiUtilityModule.toast(error.message); return; }
+        await updateNav(); navigationModule.routeTo("#dashboard"); uiUtilityModule.toast("Bem-vindo!");
+      });
+
+      if(signupForm) signupForm.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(signupForm);
+        const { error } = await supabase.auth.signUp({ email:fd.get("email"), password:fd.get("senha"), options:{ data:{ nome:fd.get("nome"), sobrenome:fd.get("sobrenome") } } });
+        if(error) { uiUtilityModule.toast(error.message); return; }
+        uiUtilityModule.toast("Cadastro solicitado! Verifique seu e-mail."); navigationModule.routeTo("#login");
+      });
+
+      return {
+        updateNav: updateNav
+      };
+    })();
     const msgDash = document.getElementById("msg-dashboard")
-    const dashKpis = document.getElementById("dash-kpis")
-    const dashChart = document.getElementById("dash-chart")
-    const dashUpcomingBody = document.querySelector("#dash-upcoming tbody")
-    const pacienteForm = document.getElementById("paciente-form")
+    // --- Dashboard Module ---
+    const dashboardModule = (() => {
+      const dashKpis = document.getElementById("dash-kpis");
+      const dashChart = document.getElementById("dash-chart");
+      const dashUpcomingBody = document.querySelector("#dash-upcoming tbody");
 
-    // Navigation logic
-    function show(id){ 
-      document.querySelectorAll("section").forEach(s=>s.classList.add("hidden")); 
-      const target = document.getElementById(id);
-      if(target) target.classList.remove("hidden");
-    }
+      async function loadAndRenderDashboard() {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
 
-    function routeTo(hash){ 
-      location.hash = hash; 
-      renderRoute(); 
-    }
+        const [pac, ag] = await Promise.all([
+          supabase.from("pacientes").select("*", { count: "exact" }),
+          supabase.from("agendamentos").select("*").order("data", { ascending: true }).limit(5)
+        ]);
 
-    async function renderRoute(){
-      const p = (location.hash || "#dashboard").replace("#","")
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if(!session && p !== "cadastro" && p !== "login"){
-        show("section-login");
-        nav.style.display = "none";
-        return;
+        renderKPIs(pac.count, ag.data);
+        renderUpcomingAppointments(ag.data);
+        renderPerformanceChart(pac.count, ag.data);
       }
 
-      if(session) nav.style.display = "flex";
-
-      if(p==="dashboard") { show("section-dashboard"); loadDash(); }
-      else if(p==="cadastros") { show("section-cadastros"); initCadastros(); }
-      else if(p==="plano") { show("section-plano"); fetchPacientes().then(renderPlanoUnivitta); }
-      else if(p==="agendamento") { show("section-agendamento"); refreshCal(); updateSelectors(); }
-      else if(p==="financeiro") { show("section-financeiro"); loadPay().then(renderPay); }
-      else if(p==="relatorios") { show("section-relatorios"); loadKPIs(); }
-      else if(p==="cadastro") show("section-cadastro")
-      else if(p==="login") show("section-login")
-      else { show("section-dashboard"); loadDash(); }
-    }
-
-    // Auth Helpers
-    async function updateNav(){ 
-      const { data: { session } } = await supabase.auth.getSession(); 
-      if(session){
-        nav.style.display = "flex"; 
-        document.getElementById("section-login").classList.add("hidden");
-      } else {
-        nav.style.display = "none";
-        if(location.hash !== "#cadastro") show("section-login");
-      }
-    }
-
-    // CRUD & Data Fetching
-    async function fetchPacientes(){ 
-      const { data, error } = await supabase.from("pacientes").select("*").order("id",{ascending:false}); 
-      return data||[]; 
-    }
-
-    function renderPacientes(list){ 
-      const tbody=document.querySelector("#pacientes-table tbody"); 
-      tbody.innerHTML=""; 
-      list.forEach(p=>{
-        const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.email}</td><td>${p.telefone}</td><td>${p.documento}</td><td>${p.numeroCarteira||"-"}</td><td>${p.planoMeses||"-"} meses</td><td><button data-id="${p.id}" class="edit-paciente">Editar</button> <button data-id="${p.id}" class="del-paciente danger">Excluir</button></td>`;
-        tbody.appendChild(tr)
-      }) 
-    }
-
-    function renderPlanoUnivitta(list){ 
-      const tbody=document.querySelector("#plano-table tbody"); 
-      if(!tbody) return; 
-      tbody.innerHTML=""; 
-      list.forEach(p=>{
-        const dataAdesao = p.dataAdesaoPlano ? new Date(p.dataAdesaoPlano).toLocaleDateString("pt-BR") : "-";
-        const diaVenc = p.dataAdesaoPlano ? new Date(p.dataAdesaoPlano).getDate() : "-";
-        const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.documento}</td><td>${dataAdesao}</td><td>${p.planoMeses||"-"} meses</td><td>${diaVenc}</td>`;
-        tbody.appendChild(tr)
-      }) 
-    }
-
-    async function initCadastros(){
-      const [p] = await Promise.all([fetchPacientes()]);
-      renderPacientes(p);
-    }
-
-    async function updateSelectors(){
-      const [p] = await Promise.all([fetchPacientes()]);
-      const selP = document.getElementById("sel-paciente");
-      if(selP) selP.innerHTML = '<option value="">Selecione...</option>' + p.map(x=>`<option value="${x.id}">${x.nome} ${x.sobrenome}</option>`).join("");
-    }
-
-    // Dashboard
-    async function loadDash(){
-      const { data: { session } } = await supabase.auth.getSession();
-      if(!session) return;
-      const [pac, ag] = await Promise.all([
-        supabase.from("pacientes").select("*",{count:"exact"}),
-        supabase.from("agendamentos").select("*").order("data",{ascending:true}).limit(5)
-      ]);
-      
-      if(dashKpis){
-        dashKpis.innerHTML = "";
-        const items = [["Pacientes", pac.count], ["Consultas", (ag.data||[]).length], ["Ativos", (pac.data||[]).filter(x=>x.planoMeses).length]];
-        items.forEach(([t,v])=>{
-          const c=document.createElement("div"); c.className="card"; c.innerHTML=`<div class="small">${t}</div><div style="font-size:24px;font-weight:bold;color:var(--primary)">${v||0}</div>`;
-          dashKpis.appendChild(c);
-        });
+      function renderKPIs(patientCount, appointments) {
+        if (dashKpis) {
+          dashKpis.innerHTML = "";
+          const items = [
+            ["Pacientes", patientCount],
+            ["Consultas", (appointments || []).length],
+            ["Ativos", (patientCount || []).filter(x => x.planoMeses).length]
+          ];
+          items.forEach(([t, v]) => {
+            const c = document.createElement("div");
+            c.className = "card";
+            c.innerHTML = `<div class="small">${t}</div><div style="font-size:var(--font-size-xl);font-weight:bold;color:var(--primary)">${v || 0}</div>`;
+            dashKpis.appendChild(c);
+          });
+        }
       }
 
-      if(dashUpcomingBody){
-        dashUpcomingBody.innerHTML = (ag.data||[]).map(a=>`<tr><td>${a.data}</td><td>${a.hora}</td><td>${a.especialidade}</td></tr>`).join("");
+      function renderUpcomingAppointments(appointments) {
+        if (dashUpcomingBody) {
+          dashUpcomingBody.innerHTML = (appointments || []).map(a => `<tr><td>${a.data}</td><td>${a.hora}</td><td>${a.especialidade}</td></tr>`).join("");
+        }
       }
 
-      if(dashChart){
-        const ctx=dashChart.getContext("2d");
-        ctx.clearRect(0,0,dashChart.width,dashChart.height);
-        const vals=[pac.count||0, (ag.data||[]).length, 10];
-        const labels=["Pacientes","Agendas","Meta"];
-        const max=Math.max(...vals, 1); const w=80; const gap=60; const base=dashChart.height-30;
-        vals.forEach((v,i)=>{
-          const h=(v/max)*(dashChart.height-80); const x=100+i*(w+gap);
-          const g=ctx.createLinearGradient(x, base-h, x, base); g.addColorStop(0, i%2?"#60a5fa":"#7dd3fc"); g.addColorStop(1, "transparent");
-          ctx.fillStyle=g; ctx.fillRect(x, base-h, w, h);
-          ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text');
-          ctx.font="11px Inter"; ctx.fillText(labels[i], x, base+15); ctx.fillText(String(v), x+w/2-5, base-h-10);
-        });
+      function renderPerformanceChart(patientCount, appointments) {
+        if (dashChart) {
+          const ctx = dashChart.getContext("2d");
+          ctx.clearRect(0, 0, dashChart.width, dashChart.height);
+          const vals = [patientCount || 0, (appointments || []).length];
+          const labels = ["Pacientes", "Agendas"];
+          const max = Math.max(...vals, 1);
+          const w = 80;
+          const gap = 60;
+          const base = dashChart.height - 30;
+          vals.forEach((v, i) => {
+            const h = (v / max) * (dashChart.height - 80);
+            const x = 100 + i * (w + gap);
+            const g = ctx.createLinearGradient(x, base - h, x, base);
+            g.addColorStop(0, i % 2 ? "#60a5fa" : "#7dd3fc");
+            g.addColorStop(1, "transparent");
+            ctx.fillStyle = g;
+            ctx.fillRect(x, base - h, w, h);
+            ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text');
+            ctx.font = "11px Inter";
+            ctx.fillText(labels[i], x, base + 15);
+            ctx.fillText(String(v), x + w / 2 - 5, base - h - 10);
+          });
+        }
       }
-    }
+
+      return {
+        init: loadAndRenderDashboard
+      };
+    })();
+
+    // --- Navigation Module ---
+    const navigationModule = (() => {
+      function show(id){ 
+        document.querySelectorAll("section").forEach(s=>s.classList.add("hidden")); 
+        const target = document.getElementById(id);
+        if(target) target.classList.remove("hidden");
+      }
+
+      function routeTo(hash){ 
+        location.hash = hash; 
+        renderRoute(); 
+      }
+
+      async function renderRoute(){
+        const p = (location.hash || "#dashboard").replace("#","")
+        const { data: { session } } = await supabase.auth.getSession();
+
+        // Remove active class from all nav links
+        document.querySelectorAll('.nav a').forEach(link => link.classList.remove('active'));
+
+        await authModule.updateNav();
+        if(!session && p !== "cadastro" && p !== "login"){
+          return;
+        }
+
+        // Add active class to current route
+        const activeLink = document.querySelector(`.nav a[data-route="#${p}"]`);
+        if (activeLink) activeLink.classList.add('active');
+
+        if(p==="dashboard") { navigationModule.show("section-dashboard"); dashboardModule.init(); }
+        else if(p==="cadastros") { navigationModule.show("section-cadastros"); pacienteModule.initCadastros(); }
+        else if(p==="plano") { navigationModule.show("section-plano"); dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta); }
+        else if(p==="agendamento") { navigationModule.show("section-agendamento"); agendamentoModule.init(); }
+        else if(p==="financeiro") { navigationModule.show("section-financeiro"); loadPay().then(renderPay); }
+        else if(p==="relatorios") { navigationModule.show("section-relatorios"); loadKPIs(); }
+        else if(p==="cadastro") navigationModule.show("section-cadastro")
+        else if(p==="login") navigationModule.show("section-login")
+        else { navigationModule.show("section-dashboard"); dashboardModule.init(); }
+      }
+
+      document.querySelectorAll('[data-route], #link-cadastro').forEach(a=>a.addEventListener("click", e=>{
+        e.preventDefault();
+        const r = a.getAttribute("data-route") || a.getAttribute("href");
+        routeTo(r);
+      }));
+
+      window.addEventListener("hashchange", renderRoute);
+
+      return {
+        show: show,
+        routeTo: routeTo,
+        renderRoute: renderRoute
+      };
+    })();
+
+
+
+    // --- Data Service Module ---
+    const dataServiceModule = (() => {
+      async function fetchPacientes(){ 
+        const { data, error } = await supabase.from("pacientes").select("*").order("id",{ascending:false}); 
+        if (error) {
+          console.error("Erro ao buscar pacientes:", error);
+          uiUtilityModule.toast("Erro ao carregar pacientes.");
+          return [];
+        }
+        return data||[]; 
+      }
+
+      async function fetchAgendamentos(){
+        const { data, error } = await supabase.from("agendamentos").select("*").order("data",{ascending:true});
+        if (error) {
+          console.error("Erro ao buscar agendamentos:", error);
+          uiUtilityModule.toast("Erro ao carregar agendamentos.");
+          return [];
+        }
+        return data||[];
+      }
+
+      async function fetchPagamentos(){
+        const { data, error } = await supabase.from("pagamentos").select("*").order("id",{ascending:false});
+        if (error) {
+          console.error("Erro ao buscar pagamentos:", error);
+          uiUtilityModule.toast("Erro ao carregar pagamentos.");
+          return [];
+        }
+        return data||[];
+      }
+
+      return {
+        fetchPacientes: fetchPacientes,
+        fetchAgendamentos: fetchAgendamentos,
+        fetchPagamentos: fetchPagamentos
+      };
+    })();
+
+    // --- Paciente Module ---
+    const pacienteModule = (() => {
+      const pacienteForm = document.getElementById("paciente-form");
+      const resetPacienteBtn = document.getElementById("reset-paciente");
+
+      function renderPacientes(list){ 
+        const tbody=document.querySelector("#pacientes-table tbody"); 
+        tbody.innerHTML=""; 
+        list.forEach(p=>{
+          const tr=document.createElement("tr");
+          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.email}</td><td>${p.telefone}</td><td>${p.documento}</td><td>${p.numeroCarteira||"-"}</td><td>${p.planoMeses||"-"} meses</td><td><button data-id="${p.id}" class="edit-paciente">Editar</button> <button data-id="${p.id}" class="del-paciente danger">Excluir</button></td>`;
+          tbody.appendChild(tr)
+        }) 
+      }
+
+      async function initCadastros(){
+        const [p] = await Promise.all([dataServiceModule.fetchPacientes()]);
+        renderPacientes(p);
+      }
+
+      // Event Listeners
+      if(pacienteForm) pacienteForm.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(pacienteForm);
+        const id=fd.get("id");
+        const body=Object.fromEntries(fd.entries());
+        if(body.planoMeses) body.planoMeses = parseInt(body.planoMeses);
+        const { error } = id ? await supabase.from("pacientes").update(body).eq("id",id) : await supabase.from("pacientes").insert([body]);
+        if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Paciente salvo"); pacienteForm.reset(); initCadastros(); dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta); }
+      });
+
+      if(resetPacienteBtn) resetPacienteBtn.addEventListener("click", ()=>{
+        pacienteForm.reset();
+        pacienteForm.querySelector('input[name="id"]').value = ''; // Clear hidden ID field
+        uiUtilityModule.toast("Formulário limpo.");
+      });
+
+      return {
+        initCadastros: initCadastros,
+        renderPacientes: renderPacientes // Export if needed by other modules
+      };
+    })();
+
+
+    // --- Plano Univitta Module ---
+    const planoUnivittaModule = (() => {
+      function renderPlanoUnivitta(list){ 
+        const tbody=document.querySelector("#plano-table tbody"); 
+        if(!tbody) return; 
+        tbody.innerHTML=""; 
+        list.forEach(p=>{
+          const dataAdesao = p.dataAdesaoPlano ? new Date(p.dataAdesaoPlano).toLocaleDateString("pt-BR") : "-";
+          const diaVenc = p.dataAdesaoPlano ? new Date(p.dataAdesaoPlano).getDate() : "-";
+          const tr=document.createElement("tr");
+          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.documento}</td><td>${p.email||"-"}</td><td>${p.telefone||"-"}</td><td>${p.endereco||"-"}</td><td>${dataAdesao}</td><td>${p.planoMeses||"-"} meses</td><td>${diaVenc}</td>`;
+          tbody.appendChild(tr)
+        }) 
+      }
+
+      return {
+        renderPlanoUnivitta: renderPlanoUnivitta
+      };
+    })();
+
+    // --- Agendamento Module ---
+    const agendamentoModule = (() => {
+      const viewSel=document.getElementById("calendar-view"); 
+      const dateSel=document.getElementById("calendar-date");
+      const formAg=document.getElementById("agendamento-form");
+      const novoAgendamentoBtn = document.getElementById("novo-agendamento");
+      const cancelAgendamentoBtn = document.getElementById("cancel-agendamento");
+
+      async function updateSelectors(){
+        const [p] = await Promise.all([dataServiceModule.fetchPacientes()]);
+        const selP = document.getElementById("sel-paciente");
+        if(selP) selP.innerHTML = '<option value="">Selecione...</option>' + p.map(x=>`<option value="${x.id}">${x.nome} ${x.sobrenome}</option>`).join("");
+      }
+
+      async function refreshCal(){ 
+        const data = await dataServiceModule.fetchAgendamentos();
+        const cal = document.getElementById("calendar");
+        if(!cal) return;
+        cal.innerHTML = '<div class="card" style="padding:var(--spacing-md); text-align:center;">Carregando agenda...</div>';
+        // Basic list view for now
+        cal.innerHTML = (data||[]).map(a=>`<div class="card" style="margin-bottom:var(--spacing-xs); padding:var(--spacing-sm)"><b>${a.data} ${a.hora}</b> - ${a.especialidade} (Sala ${a.sala||"1"})</div>`).join("");
+      }
+
+      function init(){
+        if(dateSel) dateSel.value = new Date().toISOString().slice(0,10);
+        refreshCal(); 
+        updateSelectors();
+      }
+
+      // Event Listeners
+      if(formAg) formAg.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(formAg);
+        const { error } = await supabase.from("agendamentos").insert([Object.fromEntries(fd.entries())]);
+        if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Agendado!"); document.getElementById("modal").classList.add("hidden"); refreshCal(); }
+      });
+      if(novoAgendamentoBtn) novoAgendamentoBtn.addEventListener("click", ()=>document.getElementById("modal").classList.remove("hidden"));
+      if(cancelAgendamentoBtn) cancelAgendamentoBtn.addEventListener("click", ()=>document.getElementById("modal").classList.add("hidden"));
+
+      return {
+        init: init,
+        refreshCal: refreshCal, // Export if needed by other modules
+        updateSelectors: updateSelectors // Export if needed by other modules
+      };
+    })();
 
 
     // Events
     document.querySelectorAll('[data-route], #link-cadastro').forEach(a=>a.addEventListener("click", e=>{
       e.preventDefault();
       const r = a.getAttribute("data-route") || a.getAttribute("href");
-      routeTo(r);
+      navigationModule.routeTo(r);
     }));
 
-    window.addEventListener("hashchange", renderRoute);
+    window.addEventListener("hashchange", navigationModule.renderRoute);
     
     // Auth Actions
-    const loginForm = document.getElementById("login-form");
-    if(loginForm) loginForm.addEventListener("submit", async e=>{
-      e.preventDefault();
-      const fd=new FormData(loginForm);
-      const { error } = await supabase.auth.signInWithPassword({ email:fd.get("email"), password:fd.get("senha") });
-      if(error) { toast(error.message); return; }
-      await updateNav(); routeTo("#dashboard"); toast("Bem-vindo!");
-    });
+    // const loginForm = document.getElementById("login-form");
+    // if(loginForm) loginForm.addEventListener("submit", async e=>{
+    //   e.preventDefault();
+    //   const fd=new FormData(loginForm);
+    //   const { error } = await supabase.auth.signInWithPassword({ email:fd.get("email"), password:fd.get("senha") });
+    //   if(error) { uiUtilityModule.toast(error.message); return; }
+    //   await updateNav(); navigationModule.routeTo("#dashboard"); uiUtilityModule.toast("Bem-vindo!");
+    // });
 
-    const signupForm = document.getElementById("signup-form");
-    if(signupForm) signupForm.addEventListener("submit", async e=>{
-      e.preventDefault();
-      const fd=new FormData(signupForm);
-      const { error } = await supabase.auth.signUp({ email:fd.get("email"), password:fd.get("senha"), options:{ data:{ nome:fd.get("nome"), sobrenome:fd.get("sobrenome") } } });
-      if(error) { toast(error.message); return; }
-      toast("Cadastro solicitado! Verifique seu e-mail."); routeTo("#login");
-    });
+    // const signupForm = document.getElementById("signup-form");
+    // if(signupForm) signupForm.addEventListener("submit", async e=>{
+    //   e.preventDefault();
+    //   const fd=new FormData(signupForm);
+    //   const { error } = await supabase.auth.signUp({ email:fd.get("email"), password:fd.get("senha"), options:{ data:{ nome:fd.get("nome"), sobrenome:fd.get("sobrenome") } } });
+    //   if(error) { uiUtilityModule.toast(error.message); return; }
+    //   uiUtilityModule.toast("Cadastro solicitado! Verifique seu e-mail."); navigationModule.routeTo("#login");
+    // });
 
-    if(logoutBtn) logoutBtn.addEventListener("click", async ()=>{ await supabase.auth.signOut(); updateNav(); routeTo("#login"); });
+    // if(logoutBtn) logoutBtn.addEventListener("click", async ()=>{ await supabase.auth.signOut(); updateNav(); navigationModule.routeTo("#login"); });
 
     // Forms
-    pacienteForm.addEventListener("submit", async e=>{
-      e.preventDefault();
-      const fd=new FormData(pacienteForm);
-      const id=fd.get("id");
-      const body=Object.fromEntries(fd.entries());
-      if(body.planoMeses) body.planoMeses = parseInt(body.planoMeses);
-      const { error } = id ? await supabase.from("pacientes").update(body).eq("id",id) : await supabase.from("pacientes").insert([body]);
-      if(error) toast(error.message); else { toast("Paciente salvo"); pacienteForm.reset(); initCadastros(); }
-    });
+    // Moved to pacienteModule
+    // pacienteForm.addEventListener("submit", async e=>{
+    //   e.preventDefault();
+    //   const fd=new FormData(pacienteForm);
+    //   const id=fd.get("id");
+    //   const body=Object.fromEntries(fd.entries());
+    //   if(body.planoMeses) body.planoMeses = parseInt(body.planoMeses);
+    //   const { error } = id ? await supabase.from("pacientes").update(body).eq("id",id) : await supabase.from("pacientes").insert([body]);
+    //   if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Paciente salvo"); pacienteForm.reset(); initCadastros(); dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta); }
+    // });
 
 
 
-    // Theme & Toast
-    const toggleBtn = document.getElementById("theme-toggle")
-    function setTheme(t){ document.documentElement.setAttribute("data-theme", t); localStorage.setItem("theme", t) }
-    setTheme(localStorage.getItem("theme")||"dark")
-    toggleBtn.addEventListener("click", ()=>{ const cur=document.documentElement.getAttribute("data-theme"); setTheme(cur==="dark"?"light":"dark") })
-    function toast(t){ const d=document.createElement("div"); d.className="toast"; d.textContent=t; document.body.appendChild(d); setTimeout(()=>d.remove(), 3000) }
+    // --- UI/Utility Module ---
+    const uiUtilityModule = (() => {
+      const toggleBtn = document.getElementById("theme-toggle");
+
+      function setTheme(t){ document.documentElement.setAttribute("data-theme", t); localStorage.setItem("theme", t) }
+      function toast(t){ const d=document.createElement("div"); d.className="toast"; d.textContent=t; d.setAttribute("role", "alert"); document.body.appendChild(d); setTimeout(()=>d.remove(), 3000) }
+
+      // Init theme
+      setTheme(localStorage.getItem("theme")||"dark");
+      // Event listener for theme toggle
+      if(toggleBtn) toggleBtn.addEventListener("click", ()=>{ const cur=document.documentElement.getAttribute("data-theme"); setTheme(cur==="dark"?"light":"dark") });
+
+      return {
+        setTheme: setTheme,
+        toast: toast
+      };
+    })();
 
     // Init
-    renderRoute();
-    updateNav();
+    navigationModule.renderRoute();
+    authModule.updateNav();
 
     // Calendar & Finance (Simplified versions of previously working code)
-    const viewSel=document.getElementById("calendar-view"); const dateSel=document.getElementById("calendar-date");
-    if(dateSel) dateSel.value = new Date().toISOString().slice(0,10);
-    async function refreshCal(){ 
-      const { data } = await supabase.from("agendamentos").select("*");
-      const cal = document.getElementById("calendar");
-      if(!cal) return;
-      cal.innerHTML = '<div class="card">Carregando agenda...</div>';
-      // Basic list view for now
-      cal.innerHTML = (data||[]).map(a=>`<div class="card" style="margin-bottom:8px"><b>${a.data} ${a.hora}</b> - ${a.especialidade} (Sala ${a.sala||"1"})</div>`).join("");
-    }
-    const formAg=document.getElementById("agendamento-form");
-    if(formAg) formAg.addEventListener("submit", async e=>{
-      e.preventDefault();
-      const fd=new FormData(formAg);
-      const { error } = await supabase.from("agendamentos").insert([Object.fromEntries(fd.entries())]);
-      if(error) toast(error.message); else { toast("Agendado!"); document.getElementById("modal").classList.add("hidden"); refreshCal(); }
-    });
-    document.getElementById("novo-agendamento")?.addEventListener("click", ()=>document.getElementById("modal").classList.remove("hidden"));
-    document.getElementById("cancel-agendamento")?.addEventListener("click", ()=>document.getElementById("modal").classList.add("hidden"));
+    // Moved to agendamentoModule
+    // const viewSel=document.getElementById("calendar-view"); const dateSel=document.getElementById("calendar-date");
+    // if(dateSel) dateSel.value = new Date().toISOString().slice(0,10);
+    // async function refreshCal(){ 
+    //   const data = await dataServiceModule.fetchAgendamentos();
+    //   const cal = document.getElementById("calendar");
+    //   if(!cal) return;
+    //   cal.innerHTML = '<div class="card" style="padding:var(--spacing-md); text-align:center;">Carregando agenda...</div>';
+    //   // Basic list view for now
+    //   cal.innerHTML = (data||[]).map(a=>`<div class="card" style="margin-bottom:var(--spacing-xs); padding:var(--spacing-sm)"><b>${a.data} ${a.hora}</b> - ${a.especialidade} (Sala ${a.sala||"1"})</div>`).join("");
+    // }
+    // const formAg=document.getElementById("agendamento-form");
+    // if(formAg) formAg.addEventListener("submit", async e=>{
+    //   e.preventDefault();
+    //   const fd=new FormData(formAg);
+    //   const { error } = await supabase.from("agendamentos").insert([Object.fromEntries(fd.entries())]);
+    //   if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Agendado!"); document.getElementById("modal").classList.add("hidden"); refreshCal(); }
+    // });
+    // document.getElementById("novo-agendamento")?.addEventListener("click", ()=>document.getElementById("modal").classList.remove("hidden"));
+    // document.getElementById("cancel-agendamento")?.addEventListener("click", ()=>document.getElementById("modal").classList.add("hidden"));
 
-    async function loadPay(){ const { data } = await supabase.from("pagamentos").select("*").order("id",{ascending:false}); return data||[]; }
+    async function loadPay(){ const data = await dataServiceModule.fetchPagamentos(); return data||[]; }
     function renderPay(list){ 
       const tb = document.querySelector("#pagamentos-table tbody");
       if(tb) tb.innerHTML = list.map(p=>`<tr><td>${p.consulta_id}</td><td>${p.convenio||"-"}</td><td>${p.procedimento}</td><td>R$ ${p.valor}</td><td>${new Date(p.criadoEm||Date.now()).toLocaleDateString()}</td></tr>`).join("");
@@ -457,16 +666,16 @@ th,td{padding:12px 14px;text-align:left}
       e.preventDefault();
       const fd=new FormData(e.target);
       const { error } = await supabase.from("pagamentos").insert([{...Object.fromEntries(fd.entries()), criadoEm:new Date().toISOString()}]);
-      if(error) toast(error.message); else { toast("Recebido!"); e.target.reset(); loadPay().then(renderPay); }
+      if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Recebido!"); e.target.reset(); loadPay().then(renderPay); }
     });
 
     async function loadKPIs(){
-      const [pac, pay] = await Promise.all([supabase.from("pacientes").select("*",{count:"exact"}), supabase.from("pagamentos").select("valor")]);
-      const total = (pay.data||[]).reduce((acc,v)=>acc+Number(v.valor),0);
+      const [pac, pay] = await Promise.all([dataServiceModule.fetchPacientes(), dataServiceModule.fetchPagamentos()]);
+      const total = (pay||[]).reduce((acc,v)=>acc+Number(v.valor),0);
       const box = document.getElementById("kpis-rel");
       if(box) box.innerHTML = `
-        <div class="card"><div class="small">Total Pacientes</div><div style="font-size:24px">${pac.count}</div></div>
-        <div class="card"><div class="small">Receita Total</div><div style="font-size:24px;color:var(--success)">R$ ${total.toFixed(2)}</div></div>
+        <div class="card"><div class="small">Total Pacientes</div><div style="font-size:var(--font-size-xl)">${pac.length}</div></div>
+        <div class="card"><div class="small">Receita Total</div><div style="font-size:var(--font-size-xl);color:var(--success)">R$ ${total.toFixed(2)}</div></div>
       `;
     }
     document.getElementById("export-csv")?.addEventListener("click", async ()=>{
