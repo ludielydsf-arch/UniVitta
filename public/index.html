@@ -121,9 +121,9 @@ th,td{padding:12px 14px;text-align:left}
             <div class="field"><label>Sobrenome</label><input name="sobrenome" required></div>
             <div class="field"><label>Data de Nascimento</label><input type="date" name="dataNascimento" required></div>
             <div class="field"><label>Email</label><input type="email" name="email" required></div>
-            <div class="field"><label>Data de Adesão do Plano</label><input type="date" name="dataAdesaoPlano" required></div>
-            <div class="field"><label>Endereço</label><input name="endereco" required></div>
             <div class="field"><label>Telefone</label><input name="telefone" required></div>
+            <div class="field"><label>Endereço</label><input name="endereco" required></div>
+            <div class="field"><label>Data de Adesão do Plano</label><input type="date" name="dataAdesaoPlano" required></div>
             <div class="field"><label>Documento (CPF/RG)</label><input name="documento" required></div>
             <div class="field"><label>Nº da Carteira Univitta</label><input name="numeroCarteira"></div>
             <div class="field">
@@ -186,8 +186,7 @@ th,td{padding:12px 14px;text-align:left}
         <form id="agendamento-form">
           <div class="grid">
             <div class="field"><label>Paciente</label><select name="paciente_id" id="sel-paciente" required></select></div>
-            <div class="field"><label>Médico</label><select name="medico_id" id="sel-medico" required></select></div>
-            <div class="field"><label>Especialidade</label><input name="especialidade" required></div>
+            <div class="field"><label>Especialidade / Procedimento</label><input name="especialidade" required></div>
             <div class="field"><label>Sala</label><input name="sala"></div>
             <div class="field"><label>Data</label><input type="date" name="data" required></div>
             <div class="field"><label>Hora</label><input type="time" name="hora" required></div>
@@ -247,7 +246,6 @@ th,td{padding:12px 14px;text-align:left}
     const dashChart = document.getElementById("dash-chart")
     const dashUpcomingBody = document.querySelector("#dash-upcoming tbody")
     const pacienteForm = document.getElementById("paciente-form")
-    const medicoForm = document.getElementById("medico-form")
 
     // Navigation logic
     function show(id){ 
@@ -301,10 +299,6 @@ th,td{padding:12px 14px;text-align:left}
       const { data, error } = await supabase.from("pacientes").select("*").order("id",{ascending:false}); 
       return data||[]; 
     }
-    async function fetchMedicos(){ 
-      const { data, error } = await supabase.from("medicos").select("*").order("id",{ascending:false}); 
-      return data||[]; 
-    }
 
     function renderPacientes(list){ 
       const tbody=document.querySelector("#pacientes-table tbody"); 
@@ -312,17 +306,6 @@ th,td{padding:12px 14px;text-align:left}
       list.forEach(p=>{
         const tr=document.createElement("tr");
         tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.email}</td><td>${p.telefone}</td><td>${p.documento}</td><td>${p.numeroCarteira||"-"}</td><td>${p.planoMeses||"-"} meses</td><td><button data-id="${p.id}" class="edit-paciente">Editar</button> <button data-id="${p.id}" class="del-paciente danger">Excluir</button></td>`;
-        tbody.appendChild(tr)
-      }) 
-    }
-
-    function renderMedicos(list){ 
-      const tbody=document.querySelector("#medicos-table tbody"); 
-      if(!tbody) return;
-      tbody.innerHTML=""; 
-      list.forEach(m=>{
-        const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${m.nome} ${m.sobrenome}</td><td>${m.email}</td><td>${m.telefone}</td><td>${m.documento}</td><td>${m.especialidade}</td><td><button data-id="${m.id}" class="edit-medico">Editar</button> <button data-id="${m.id}" class="del-medico danger">Excluir</button></td>`;
         tbody.appendChild(tr)
       }) 
     }
@@ -341,32 +324,28 @@ th,td{padding:12px 14px;text-align:left}
     }
 
     async function initCadastros(){
-      const [p, m] = await Promise.all([fetchPacientes(), fetchMedicos()]);
+      const [p] = await Promise.all([fetchPacientes()]);
       renderPacientes(p);
-      renderMedicos(m);
     }
 
     async function updateSelectors(){
-      const [p, m] = await Promise.all([fetchPacientes(), fetchMedicos()]);
+      const [p] = await Promise.all([fetchPacientes()]);
       const selP = document.getElementById("sel-paciente");
-      const selM = document.getElementById("sel-medico");
       if(selP) selP.innerHTML = '<option value="">Selecione...</option>' + p.map(x=>`<option value="${x.id}">${x.nome} ${x.sobrenome}</option>`).join("");
-      if(selM) selM.innerHTML = '<option value="">Selecione...</option>' + m.map(x=>`<option value="${x.id}">${x.nome} ${x.sobrenome}</option>`).join("");
     }
 
     // Dashboard
     async function loadDash(){
       const { data: { session } } = await supabase.auth.getSession();
       if(!session) return;
-      const [pac, med, ag] = await Promise.all([
+      const [pac, ag] = await Promise.all([
         supabase.from("pacientes").select("*",{count:"exact"}),
-        supabase.from("medicos").select("*",{count:"exact"}),
         supabase.from("agendamentos").select("*").order("data",{ascending:true}).limit(5)
       ]);
       
       if(dashKpis){
         dashKpis.innerHTML = "";
-        const items = [["Pacientes", pac.count], ["Médicos", med.count], ["Consultas", (ag.data||[]).length], ["Ativos", (pac.data||[]).filter(x=>x.planoMeses).length]];
+        const items = [["Pacientes", pac.count], ["Consultas", (ag.data||[]).length], ["Ativos", (pac.data||[]).filter(x=>x.planoMeses).length]];
         items.forEach(([t,v])=>{
           const c=document.createElement("div"); c.className="card"; c.innerHTML=`<div class="small">${t}</div><div style="font-size:24px;font-weight:bold;color:var(--primary)">${v||0}</div>`;
           dashKpis.appendChild(c);
@@ -380,11 +359,11 @@ th,td{padding:12px 14px;text-align:left}
       if(dashChart){
         const ctx=dashChart.getContext("2d");
         ctx.clearRect(0,0,dashChart.width,dashChart.height);
-        const vals=[pac.count||0, med.count||0, (ag.data||[]).length, 10];
-        const labels=["Pacientes","Médicos","Agendas","Meta"];
-        const max=Math.max(...vals, 1); const w=60; const gap=40; const base=dashChart.height-30;
+        const vals=[pac.count||0, (ag.data||[]).length, 10];
+        const labels=["Pacientes","Agendas","Meta"];
+        const max=Math.max(...vals, 1); const w=80; const gap=60; const base=dashChart.height-30;
         vals.forEach((v,i)=>{
-          const h=(v/max)*(dashChart.height-80); const x=50+i*(w+gap);
+          const h=(v/max)*(dashChart.height-80); const x=100+i*(w+gap);
           const g=ctx.createLinearGradient(x, base-h, x, base); g.addColorStop(0, i%2?"#60a5fa":"#7dd3fc"); g.addColorStop(1, "transparent");
           ctx.fillStyle=g; ctx.fillRect(x, base-h, w, h);
           ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text');
@@ -392,6 +371,7 @@ th,td{padding:12px 14px;text-align:left}
         });
       }
     }
+
 
     // Events
     document.querySelectorAll('[data-route], #link-cadastro').forEach(a=>a.addEventListener("click", e=>{
@@ -434,14 +414,7 @@ th,td{padding:12px 14px;text-align:left}
       if(error) toast(error.message); else { toast("Paciente salvo"); pacienteForm.reset(); initCadastros(); }
     });
 
-    if(medicoForm) medicoForm.addEventListener("submit", async e=>{
-      e.preventDefault();
-      const fd=new FormData(medicoForm);
-      const id=fd.get("id");
-      const body=Object.fromEntries(fd.entries());
-      const { error } = id ? await supabase.from("medicos").update(body).eq("id",id) : await supabase.from("medicos").insert([body]);
-      if(error) toast(error.message); else { toast("Médico salvo"); medicoForm.reset(); initCadastros(); }
-    });
+
 
     // Theme & Toast
     const toggleBtn = document.getElementById("theme-toggle")
@@ -488,12 +461,11 @@ th,td{padding:12px 14px;text-align:left}
     });
 
     async function loadKPIs(){
-      const [pac, med, pay] = await Promise.all([supabase.from("pacientes").select("*",{count:"exact"}), supabase.from("medicos").select("*",{count:"exact"}), supabase.from("pagamentos").select("valor")]);
+      const [pac, pay] = await Promise.all([supabase.from("pacientes").select("*",{count:"exact"}), supabase.from("pagamentos").select("valor")]);
       const total = (pay.data||[]).reduce((acc,v)=>acc+Number(v.valor),0);
       const box = document.getElementById("kpis-rel");
       if(box) box.innerHTML = `
         <div class="card"><div class="small">Total Pacientes</div><div style="font-size:24px">${pac.count}</div></div>
-        <div class="card"><div class="small">Total Médicos</div><div style="font-size:24px">${med.count}</div></div>
         <div class="card"><div class="small">Receita Total</div><div style="font-size:24px;color:var(--success)">R$ ${total.toFixed(2)}</div></div>
       `;
     }
