@@ -9,4 +9,4 @@ git remote add origin https://github.com/ludielydsf-arch/UniVitta.git
 git add .
 git commit -m "Sistema Univitta: SPA avancado com Supabase e Plano Univitta"
 git branch -M main
-git push -u origin main --force
+git push -u origin main --force 2>&1
