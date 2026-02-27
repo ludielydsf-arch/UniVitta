@@ -56,7 +56,7 @@ th,td{padding:12px 14px;text-align:left}
       </div>
       <nav class="nav" id="main-nav" style="display:none">
         <a class="secondary" data-route="#dashboard">Dashboard</a>
-        <a class="secondary" data-route="#cadastros">Pacientes/Médicos</a>
+        <a class="secondary" data-route="#cadastros">Pacientes</a>
         <a class="secondary" data-route="#plano">Plano Univitta</a>
         <a class="secondary" data-route="#agendamento">Agendamento</a>
         <a class="secondary" data-route="#financeiro">Financeiro</a>
@@ -142,28 +142,6 @@ th,td{padding:12px 14px;text-align:left}
         </form>
         <div style="overflow-x:auto">
           <table id="pacientes-table"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Documento</th><th>Carteira</th><th>Plano</th><th>Ações</th></tr></thead><tbody></tbody></table>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:16px">
-        <h2>Gestão de Médicos</h2>
-        <form id="medico-form">
-          <input type="hidden" name="id">
-          <div class="grid">
-            <div class="field"><label>Nome</label><input name="nome" required></div>
-            <div class="field"><label>Sobrenome</label><input name="sobrenome" required></div>
-            <div class="field"><label>Email</label><input type="email" name="email" required></div>
-            <div class="field"><label>Telefone</label><input name="telefone" required></div>
-            <div class="field"><label>Documento</label><input name="documento" required></div>
-            <div class="field"><label>Especialidade</label><input name="especialidade" required></div>
-          </div>
-          <div class="row">
-            <button class="primary" type="submit">Salvar Médico</button>
-            <button class="secondary" type="button" id="reset-medico">Limpar / Novo</button>
-          </div>
-        </form>
-        <div style="overflow-x:auto">
-          <table id="medicos-table"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Documento</th><th>Especialidade</th><th>Ações</th></tr></thead><tbody></tbody></table>
         </div>
       </div>
       <div id="msg-dashboard"></div>
@@ -340,6 +318,7 @@ th,td{padding:12px 14px;text-align:left}
 
     function renderMedicos(list){ 
       const tbody=document.querySelector("#medicos-table tbody"); 
+      if(!tbody) return;
       tbody.innerHTML=""; 
       list.forEach(m=>{
         const tr=document.createElement("tr");
@@ -455,7 +434,7 @@ th,td{padding:12px 14px;text-align:left}
       if(error) toast(error.message); else { toast("Paciente salvo"); pacienteForm.reset(); initCadastros(); }
     });
 
-    medicoForm.addEventListener("submit", async e=>{
+    if(medicoForm) medicoForm.addEventListener("submit", async e=>{
       e.preventDefault();
       const fd=new FormData(medicoForm);
       const id=fd.get("id");
