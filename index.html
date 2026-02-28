@@ -1,13 +1,1033 @@
 <!doctype html>
-<html lang="pt-BR">
+<!-- Updated: 2026-02-27 -->
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>UniVitta</title>
-  <meta http-equiv="refresh" content="0; url=public/index.html">
-  <script>
-    location.replace("public/index.html")
-  </script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+  <title>Clínica Médica</title>
+  <style>
+:root{--bg:#050a14;--bg-2:#0a1226;--card:#111b33;--muted:#8ba1c2;--text:#f1f5f9;--primary:#d4af37;--primary-2:#f3cf55;--accent:#1a2a47;--accent-2:#243659;--danger:#ef4444;--danger-2:#b91c1c;--border:#2a4069;--success:#10b981;--spacing-xs:4px;--spacing-sm:8px;--spacing-md:16px;--spacing-lg:24px;--spacing-xl:32px;--font-size-sm:12px;--font-size-md:14px;--font-size-lg:16px;--font-size-xl:20px;--font-size-xxl:26px}
+[data-theme="light"]{--bg:#f8fafc;--bg-2:#f1f5f9;--card:#ffffff;--muted:#64748b;--text:#0f172a;--primary:#0e4d92;--primary-2:#2563eb;--accent:#f1f5f9;--accent-2:#e2e8f0;--danger:#ef4444;--danger-2:#b91c1c;--border:#cbd5e1;--success:#10b981}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;margin:0;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%);color:var(--text);line-height:1.5}
+.app{display:grid;grid-template-columns:260px 1fr;gap:var(--spacing-md);max-width:1400px;margin:0 auto;padding:var(--spacing-md)}
+.sidebar{background:var(--card);border:1px solid var(--border);border-radius:var(--spacing-md);box-shadow:0 10px 30px rgba(0,0,0,.25);padding:var(--spacing-md);height:calc(100vh - var(--spacing-xl));position:sticky;top:var(--spacing-md)}
+.brand{display:flex;align-items:center;gap:var(--spacing-sm);margin-bottom:var(--spacing-md);padding-bottom:var(--spacing-md);border-bottom:1px solid var(--border)}
+.logo{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center;color:var(--bg);font-weight:700;font-size:24px;font-family:'Times New Roman',serif;box-shadow:0 4px 12px rgba(212,175,55,0.4);border:2px solid rgba(255,255,255,0.1)}
+.logo::after{content:"U"}
+.theme-toggle{margin-left:auto;padding:var(--spacing-sm) var(--spacing-md);border-radius:var(--spacing-xs);background:var(--accent);color:var(--text);border:1px solid var(--border);font-size:var(--font-size-sm)}
+.nav{display:flex;flex-direction:column;gap:var(--spacing-xs)}
+.nav a{padding:var(--spacing-sm) var(--spacing-md);border-radius:var(--spacing-xs);text-decoration:none;color:var(--text);background:var(--accent);border:1px solid var(--border);transition:background .2s ease}
+.nav a:hover{background:var(--accent-2)}
+.nav a.active{background:var(--primary);color:var(--text);font-weight:600}
+.logout{margin-top:var(--spacing-md)}
+.content{display:flex;flex-direction:column;gap:var(--spacing-md);padding:0 var(--spacing-xs)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--spacing-md);box-shadow:0 10px 30px rgba(0,0,0,.25);padding:var(--spacing-lg)}
+h1{margin:0 0 var(--spacing-sm);font-size:var(--font-size-xxl)}
+h2{margin:0 0 var(--spacing-md);font-size:var(--font-size-xl);color:var(--muted)}
+.field{margin-bottom:var(--spacing-md)}
+.field label{display:block;font-size:var(--font-size-sm);color:var(--muted);margin-bottom:var(--spacing-xs)}
+.field input,.field textarea,.field select{width:100%;padding:var(--spacing-sm) var(--spacing-md);border:1px solid var(--border);border-radius:var(--spacing-xs);background:var(--accent);color:var(--text);outline:none;font-size:var(--font-size-md);transition:border-color .2s ease}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--primary)}
+.row{display:flex;gap:var(--spacing-sm);align-items:center;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--spacing-md)}
+@media (max-width:980px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:static}.grid{grid-template-columns:1fr}}
+@media (max-width:768px){.grid{grid-template-columns:1fr}.row{flex-direction:column;align-items:flex-start}}
+button{padding:var(--spacing-sm) var(--spacing-md);border:0;border-radius:var(--spacing-xs);background:linear-gradient(90deg,var(--primary) 0%,var(--primary-2) 100%);color:var(--bg);cursor:pointer;transition:.2s transform,.2s filter;font-size:var(--font-size-md);font-weight:700;letter-spacing:0.5px}
+button:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.secondary{background:var(--accent);color:var(--text);border:1px solid var(--border)}
+.danger{background:var(--danger)}
+.danger:hover{background:var(--danger-2)}
+table{width:100%;border-collapse:separate;border-spacing:0 var(--spacing-sm);margin-top:var(--spacing-md)}
+thead th{font-size:var(--font-size-sm);color:var(--muted);text-transform:uppercase;padding-bottom:var(--spacing-xs)}
+tbody tr{background:var(--accent);border:1px solid var(--border);border-radius:var(--spacing-xs);transition:background .2s ease}
+tbody tr:hover{background:var(--accent-2)}
+th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
+.hidden{display:none !important}
+.small{font-size:var(--font-size-sm);color:var(--muted)}
+.toast{position:fixed;right:var(--spacing-md);bottom:var(--spacing-md);background:var(--card);border:1px solid var(--border);color:var(--text);padding:var(--spacing-sm) var(--spacing-md);border-radius:var(--spacing-xs);box-shadow:0 8px 20px rgba(0,0,0,.25);z-index:999}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--spacing-sm)}
+.calendar-cell{background:var(--accent);border:1px solid var(--border);border-radius:var(--spacing-xs);padding:var(--spacing-sm)}
+.calendar-date{font-size:var(--font-size-sm);color:var(--muted);margin-bottom:var(--spacing-xs)}
+.action-btn{background:transparent;border:none;cursor:pointer;padding:4px;color:var(--text);transition:color .2s}
+.action-btn:hover{color:var(--primary)}
+/* Modern Dashboard Styles */
+.stat-card{background:var(--card);padding:var(--spacing-md);border-radius:var(--spacing-md);border:1px solid var(--border);display:flex;flex-direction:column;gap:var(--spacing-xs);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,0.2)}
+.stat-card::after{content:"";position:absolute;top:0;right:0;width:80px;height:80px;background:linear-gradient(135deg,transparent 50%,rgba(255,255,255,0.05) 50%);border-radius:0 0 0 100%}
+.stat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:var(--spacing-xs)}
+.stat-value{font-size:28px;font-weight:700;color:var(--text);line-height:1}
+.stat-label{font-size:var(--font-size-sm);color:var(--muted);font-weight:500}
+.stat-trend{font-size:11px;padding:2px 8px;border-radius:10px;width:fit-content;display:flex;align-items:center;gap:4px}
+.trend-up{background:rgba(16,185,129,0.15);color:var(--success)}
+.trend-down{background:rgba(239,68,68,0.15);color:var(--danger)}
+
+.chart-wrapper{background:var(--card);padding:var(--spacing-lg);border-radius:var(--spacing-md);border:1px solid var(--border);height:300px;position:relative}
+.chart-tooltip{position:absolute;background:var(--bg);padding:4px 8px;border-radius:4px;font-size:12px;border:1px solid var(--border);pointer-events:none;opacity:0;transition:opacity .2s}
+
+.upcoming-list{display:flex;flex-direction:column;gap:var(--spacing-sm)}
+.upcoming-item{display:flex;align-items:center;gap:var(--spacing-md);padding:var(--spacing-sm);background:var(--accent);border-radius:var(--spacing-sm);border:1px solid var(--border);transition:background .2s}
+.upcoming-item:hover{background:var(--accent-2)}
+.avatar-initials{width:36px;height:36px;border-radius:50%;background:var(--primary);color:var(--bg);display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px}
+.upcoming-info{flex:1}
+.upcoming-name{font-weight:600;font-size:14px}
+.upcoming-meta{font-size:12px;color:var(--muted);display:flex;gap:10px}
+.status-chip{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(125,211,252,0.15);color:var(--primary);text-transform:uppercase;font-weight:600}
+  </style>
+
 </head>
-<body>Redirecionando para a aplicação...</body>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div style="display:flex;flex-direction:column;line-height:1.2">
+          <div style="font-weight:700;font-size:16px;color:var(--primary);letter-spacing:1px;text-transform:uppercase">UniVitta</div>
+          <div style="font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-weight:500">Saúde Integrada</div>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" style="margin-left:auto;padding:2px 8px;font-size:10px;height:24px;background:transparent;border:1px solid var(--muted);color:var(--muted)">Tema</button>
+      </div>
+      <nav class="nav" id="main-nav" style="display:none">
+        <a class="secondary" data-route="#dashboard">Dashboard</a>
+        <a class="secondary" data-route="#cadastros">Pacientes</a>
+        <a class="secondary" data-route="#plano">Plano Univitta</a>
+        <a class="secondary" data-route="#agendamento">Agendamento</a>
+        <a class="secondary" data-route="#financeiro">Financeiro</a>
+        <a class="secondary" data-route="#relatorios">Relatórios</a>
+        <button class="danger logout" id="logout">Sair</button>
+      </nav>
+    </aside>
+    <main class="content">
+
+    <section id="section-login" class="card">
+      <h2>Login da Equipe</h2>
+      <form id="login-form">
+        <div class="field"><label>Email</label><input type="email" name="email" required placeholder="seu@email.com"></div>
+        <div class="field"><label>Senha</label><input type="password" name="senha" required placeholder="••••••••"></div>
+        <button class="primary" type="submit" style="width:100%; margin-top:var(--spacing-md)">Entrar no Sistema</button>
+      </form>
+      <p class="small" style="text-align:center;margin-top:var(--spacing-md)">Não possui acesso? <a id="link-cadastro" href="#cadastro">Solicite aqui</a></p>
+      <div id="msg" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
+    </section>
+
+    <section id="section-cadastro" class="card hidden">
+      <h2>Cadastro de Administrador</h2>
+      <form id="signup-form">
+        <div class="grid">
+          <div class="field"><label>Nome</label><input name="nome" required></div>
+          <div class="field"><label>Sobrenome</label><input name="sobrenome" required></div>
+        </div>
+        <div class="field"><label>Email Profissional</label><input type="email" name="email" required></div>
+        <div class="field"><label>Senha de Acesso</label><input type="password" name="senha" required></div>
+        <button class="primary" type="submit" style="width:100%; margin-top:var(--spacing-md)">Finalizar Cadastro</button>
+      </form>
+      <p class="small" style="text-align:center;margin-top:var(--spacing-md)"><a href="#login">Voltar para o Login</a></p>
+      <div id="msg-cadastro" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
+    </section>
+
+    <section id="section-dashboard" class="hidden">
+      <div class="grid" id="dash-kpis" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:var(--spacing-md);">
+        <!-- KPIs via JS -->
+      </div>
+      <div class="grid" style="grid-template-columns: 2fr 1fr; margin-top: var(--spacing-md);">
+        <div class="card">
+          <h2>Desempenho Mensal</h2>
+          <canvas id="dash-chart" width="600" height="250" style="width:100%;height:250px"></canvas>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;gap:var(--spacing-sm)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h2 style="margin:0">Próximas Consultas</h2>
+            <a href="#agendamento" style="font-size:12px;color:var(--primary);text-decoration:none">Ver Agenda</a>
+          </div>
+          <div id="dash-upcoming" class="upcoming-list">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-cadastros" class="hidden">
+      <div class="card">
+        <div class="row" style="justify-content:space-between; margin-bottom:var(--spacing-md)">
+          <h2>Gestão de Pacientes</h2>
+          <button id="btn-novo-paciente" class="primary">+ Novo Paciente</button>
+        </div>
+        
+        <div id="container-paciente-form" class="hidden" style="background:var(--accent); padding:var(--spacing-md); border-radius:var(--spacing-sm); margin-bottom:var(--spacing-md); border:1px solid var(--border)">
+          <h3 style="margin-top:0">Ficha do Paciente</h3>
+          <form id="paciente-form">
+            <input type="hidden" name="id">
+            <div class="grid">
+              <div class="field"><label>Nome</label><input name="nome" required></div>
+              <div class="field"><label>Sobrenome</label><input name="sobrenome" required></div>
+              <div class="field"><label>Data de Nascimento</label><input type="date" name="datanascimento" required></div>
+              <div class="field"><label>Email</label><input type="email" name="email" required placeholder="email@exemplo.com"></div>
+              <div class="field"><label>Data de Adesão do Plano</label><input type="date" name="dataadesaoplano" required></div>
+              <div class="field"><label>Telefone</label><input name="telefone" required placeholder="(XX) XXXXX-XXXX"></div>
+              <div class="field"><label>Endereço</label><input name="endereco" required placeholder="Rua, Número, Bairro, Cidade, Estado"></div>
+              <div class="field"><label>Documento (CPF/RG)</label><input name="documento" required placeholder="XXX.XXX.XXX-XX ou X.XXX.XXX"></div>
+              <div class="field"><label>Nº da Carteira Univitta</label><input name="numerocarteira" placeholder="XXXX.XXXX.XXXX.XXXX"></div>
+              <div class="field">
+                <label>Tempo Contratado (Plano)</label>
+                <select name="planomeses">
+                  <option value="">Selecione</option>
+                  <option value="3">3 meses</option>
+                  <option value="6">6 meses</option>
+                </select>
+              </div>
+            </div>
+            <div class="row" style="margin-top:var(--spacing-md)">
+              <button class="primary" type="submit">Salvar Paciente</button>
+              <button class="secondary" type="button" id="cancel-paciente">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table id="pacientes-table"><thead><tr><th>Nome</th><th>Email</th><th>Telefone</th><th>Plano</th><th style="text-align:center">Ações</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+      <div id="msg-dashboard" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
+
+      <!-- Modal Detalhes -->
+      <div id="modal-detalhes" class="hidden" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:2000;display:flex;align-items:center;justify-content:center">
+        <div class="card" style="width:90%;max-width:500px;position:relative">
+          <button id="close-detalhes" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text);font-size:20px;cursor:pointer">&times;</button>
+          <h2 style="margin-bottom:var(--spacing-md)">Detalhes do Paciente</h2>
+          <div id="detalhes-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-plano" class="hidden">
+      <div class="card">
+        <div class="brand" style="border:none; padding-bottom:0; margin-bottom:var(--spacing-md)">
+          <div class="logo"></div>
+          <h2 style="margin:0; color:var(--text); font-size:var(--font-size-xl)">Painel Plano Univitta</h2>
+        </div>
+        <div style="overflow-x:auto">
+          <table id="plano-table">
+            <thead><tr><th>Paciente Completo</th><th>Documento</th><th>Email</th><th>Telefone</th><th>Endereço</th><th>Data Adesão</th><th>Tempo Contratado</th><th>Dia Vencimento</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-agendamento" class="hidden">
+      <div class="card">
+        <div class="row" style="justify-content:space-between; margin-bottom:var(--spacing-md)">
+          <h2>Agenda Clínica</h2>
+          <div class="row">
+            <select id="calendar-view">
+              <option value="mensal">Mensal</option>
+              <option value="semanal">Semanal</option>
+              <option value="diaria">Diária</option>
+            </select>
+            <input type="date" id="calendar-date">
+            <button class="secondary" id="prev">Anterior</button>
+            <button class="secondary" id="next">Próximo</button>
+            <button class="primary" id="novo-agendamento">+ Novo Agendamento</button>
+          </div>
+        </div>
+      </div>
+      <div id="calendar" class="card" style="margin-top:var(--spacing-md)"></div>
+      
+      <div id="modal" class="card hidden" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;width:90%;max-width:600px;box-shadow:0 0 50px rgba(0,0,0,0.5)">
+        <h2>Agendar Consulta</h2>
+        <form id="agendamento-form">
+          <div class="grid">
+            <div class="field"><label>Paciente</label><select name="paciente_id" id="sel-paciente" required></select></div>
+            <div class="field"><label>Especialidade / Procedimento</label><input name="especialidade" required></div>
+            <div class="field"><label>Sala</label><input name="sala"></div>
+            <div class="field"><label>Data</label><input type="date" name="data" required></div>
+            <div class="field"><label>Hora</label><input type="time" name="hora" required></div>
+            <div class="field"><label>Duração (min)</label><input type="number" name="duracao" value="30" required></div>
+          </div>
+          <div class="row" style="margin-top:var(--spacing-md)">
+            <button class="primary" type="submit">Confirmar Agendamento</button>
+            <button class="secondary" type="button" id="cancel-agendamento">Fechar</button>
+          </div>
+        </form>
+        <div id="msg-agendamento" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
+      </div>
+    </section>
+
+    <section id="section-financeiro" class="hidden">
+      <div class="card">
+        <h2>Controle Financeiro</h2>
+        <form id="pagamento-form">
+          <div class="grid">
+            <div class="field"><label>Consulta / Paciente</label><input name="consulta_id" required placeholder="ID ou Nome"></div>
+            <div class="field"><label>Método / Convênio</label><input name="convenio" placeholder="Ex: Particular, Unimed..."></div>
+            <div class="field"><label>Procedimento</label><input name="procedimento" placeholder="Ex: Consulta Geral"></div>
+            <div class="field"><label>Valor (R$)</label><input type="number" step="0.01" name="valor" required></div>
+          </div>
+          <div class="row" style="margin-top:var(--spacing-md)"><button class="primary" type="submit">Registrar Recebimento</button></div>
+        </form>
+        <div id="msg-financeiro" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
+        <div style="overflow-x:auto; margin-top:var(--spacing-md)">
+          <table id="pagamentos-table"><thead><tr><th>Descrição</th><th>Método</th><th>Procedimento</th><th>Valor</th><th>Data</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-relatorios" class="hidden">
+      <div class="card">
+        <h2>Relatórios e Exportação</h2>
+        <div id="kpis-rel" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:var(--spacing-md); margin-bottom:var(--spacing-md)"></div>
+        <div class="row">
+          <button class="primary" id="export-csv">Baixar Relatório Financeiro (CSV)</button>
+        </div>
+        <div id="msg-relatorios" style="margin-top:var(--spacing-md); text-align:center; color:var(--danger)"></div>
+      </div>
+    </section>
+
+ 
+    </main>
+  </div>
+
+  <script type="module">
+    const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm")
+    const supabase = createClient("https://xpyqwttguspnlwekgsve.supabase.co", "sb_publishable_VpuyIhNM4oK5kmm1WdhDBQ_0d8NioX0")
+    
+    const nav = document.getElementById("main-nav")
+    // --- Auth Module ---
+    const authModule = (() => {
+      const logoutBtn = document.getElementById("logout");
+      const loginForm = document.getElementById("login-form");
+      const signupForm = document.getElementById("signup-form");
+
+      async function updateNav(){ 
+        const { data: { session }, error } = await supabase.auth.getSession(); 
+        
+        if (error) {
+          if (error.message.includes("Refresh Token")) {
+            await supabase.auth.signOut();
+            location.hash = "#login";
+            return;
+          }
+        }
+
+        if(session){
+          nav.style.display = "flex"; 
+          document.getElementById("section-login").classList.add("hidden"); // Hide login section
+          // If a session exists and the current route is login, cadastro, or empty, redirect to dashboard.
+          // This ensures the login section is hidden and a proper private section is shown.
+          if (location.hash === "#login" || location.hash === "#cadastro" || location.hash === "") {
+            navigationModule.routeTo("#dashboard");
+          }
+        } else {
+          nav.style.display = "none";
+          if(location.hash !== "#cadastro") navigationModule.show("section-login");
+        }
+      }
+
+      if(logoutBtn) logoutBtn.addEventListener("click", async ()=>{ await supabase.auth.signOut(); updateNav(); navigationModule.routeTo("#login"); });
+
+      if(loginForm) loginForm.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(loginForm);
+        const { error } = await supabase.auth.signInWithPassword({ email:fd.get("email"), password:fd.get("senha") });
+        if(error) { uiUtilityModule.toast(error.message); return; }
+        await updateNav(); navigationModule.routeTo("#dashboard"); uiUtilityModule.toast("Bem-vindo!");
+      });
+
+      if(signupForm) signupForm.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(signupForm);
+        const { error } = await supabase.auth.signUp({ email:fd.get("email"), password:fd.get("senha"), options:{ data:{ nome:fd.get("nome"), sobrenome:fd.get("sobrenome") } } });
+        if(error) { uiUtilityModule.toast(error.message); return; }
+        uiUtilityModule.toast("Cadastro solicitado! Verifique seu e-mail."); navigationModule.routeTo("#login");
+      });
+
+      return {
+        updateNav: updateNav
+      };
+    })();
+    const msgDash = document.getElementById("msg-dashboard")
+    // --- Dashboard Module ---
+    const dashboardModule = (() => {
+      const dashKpis = document.getElementById("dash-kpis");
+      const dashChart = document.getElementById("dash-chart");
+      const dashUpcoming = document.getElementById("dash-upcoming");
+
+      async function loadAndRenderDashboard() {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error || !session) {
+          if(error && error.message.includes("Refresh Token")) {
+             await supabase.auth.signOut();
+             location.reload();
+          }
+          return;
+        }
+
+        const [pac, ag] = await Promise.all([
+          supabase.from("pacientes").select("*"),
+          supabase.from("agendamentos").select("*").order("data", { ascending: true }).limit(5)
+        ]);
+
+        const patients = pac.data || [];
+        const appointments = ag.data || [];
+
+        renderKPIs(patients, appointments);
+        renderUpcomingAppointments(appointments);
+        renderPerformanceChart(patients.length, appointments);
+      }
+
+      function renderKPIs(patients, appointments) {
+        if (dashKpis) {
+          dashKpis.innerHTML = "";
+          const activeCount = patients.filter(x => x.planomeses || x.planoMeses).length;
+          
+          // Icons (SVG)
+          const ICON_USERS = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`;
+          const ICON_CALENDAR = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`;
+          const ICON_HEART = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>`;
+
+          const items = [
+            { label: "Pacientes Totais", value: patients.length, icon: ICON_USERS, color: "var(--primary)", trend: "+12%" },
+            { label: "Consultas Agendadas", value: appointments.length, icon: ICON_CALENDAR, color: "#a855f7", trend: "+5%" },
+            { label: "Planos Ativos", value: activeCount, icon: ICON_HEART, color: "#10b981", trend: "+8%" }
+          ];
+
+          items.forEach(item => {
+            const c = document.createElement("div");
+            c.className = "stat-card";
+            c.innerHTML = `
+              <div style="display:flex;justify-content:space-between;align-items:start">
+                <div class="stat-icon" style="background:${item.color}20;color:${item.color}">${item.icon}</div>
+                <div class="stat-trend trend-up">${item.trend}</div>
+              </div>
+              <div class="stat-value">${item.value}</div>
+              <div class="stat-label">${item.label}</div>
+            `;
+            dashKpis.appendChild(c);
+          });
+        }
+      }
+
+      function renderUpcomingAppointments(appointments) {
+        if (dashUpcoming) {
+          if(!appointments.length) {
+            dashUpcoming.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted)">Nenhuma consulta próxima.</div>`;
+            return;
+          }
+          dashUpcoming.innerHTML = appointments.map(a => {
+            // Mock patient name if not joined (simple version)
+            // In real app we would join tables or fetch patient name
+            const initials = "P"; 
+            return `
+            <div class="upcoming-item">
+              <div class="avatar-initials">${initials}</div>
+              <div class="upcoming-info">
+                <div class="upcoming-name">${a.especialidade}</div>
+                <div class="upcoming-meta">
+                  <span>📅 ${new Date(a.data).toLocaleDateString()}</span>
+                  <span>⏰ ${a.hora}</span>
+                </div>
+              </div>
+              <div class="status-chip">Confirmado</div>
+            </div>`;
+          }).join("");
+        }
+      }
+
+      function renderPerformanceChart(patientCount, appointments) {
+        if (dashChart) {
+          const ctx = dashChart.getContext("2d");
+          const w = dashChart.width;
+          const h = dashChart.height;
+          ctx.clearRect(0, 0, w, h);
+          
+          // Mock data for smoothness
+          const dataPoints = [10, 15, 8, 25, 20, 30, appointments.length + 5]; 
+          const step = w / (dataPoints.length - 1);
+          
+          // Draw Area
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          dataPoints.forEach((v, i) => {
+            const x = i * step;
+            const y = h - (v / 40) * h; // Scale
+            if(i===0) ctx.lineTo(x, y);
+            else {
+              // Smooth curve
+              const prevX = (i - 1) * step;
+              const prevY = h - (dataPoints[i-1] / 40) * h;
+              const cp1x = prevX + (x - prevX) / 2;
+              const cp1y = prevY;
+              const cp2x = prevX + (x - prevX) / 2;
+              const cp2y = y;
+              ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
+            }
+          });
+          ctx.lineTo(w, h);
+          ctx.closePath();
+          
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, "rgba(212, 175, 55, 0.5)"); // Gold
+          grad.addColorStop(1, "rgba(212, 175, 55, 0)");
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          // Draw Line
+          ctx.beginPath();
+          dataPoints.forEach((v, i) => {
+            const x = i * step;
+            const y = h - (v / 40) * h;
+            if(i===0) ctx.moveTo(x, y);
+            else {
+               const prevX = (i - 1) * step;
+               const prevY = h - (dataPoints[i-1] / 40) * h;
+               const cp1x = prevX + (x - prevX) / 2;
+               const cp1y = prevY;
+               const cp2x = prevX + (x - prevX) / 2;
+               const cp2y = y;
+               ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
+            }
+          });
+          ctx.strokeStyle = "#d4af37";
+          ctx.lineWidth = 3;
+          ctx.stroke();
+        }
+      }
+
+      return {
+        init: loadAndRenderDashboard
+      };
+    })();
+
+    // --- Navigation Module ---
+    const navigationModule = (() => {
+      function show(id){ 
+        document.querySelectorAll("section").forEach(s=>s.classList.add("hidden")); 
+        const target = document.getElementById(id);
+        if(target) target.classList.remove("hidden");
+      }
+
+      function routeTo(hash){ 
+        location.hash = hash; 
+        renderRoute(); 
+      }
+
+      async function renderRoute(){
+        const p = (location.hash || "#dashboard").replace("#","")
+        const { data: { session } } = await supabase.auth.getSession();
+
+        // Remove active class from all nav links
+        document.querySelectorAll('.nav a').forEach(link => link.classList.remove('active'));
+
+        await authModule.updateNav();
+        if(!session && p !== "cadastro" && p !== "login"){
+          return;
+        }
+
+        // Add active class to current route
+        const activeLink = document.querySelector(`.nav a[data-route="#${p}"]`);
+        if (activeLink) activeLink.classList.add('active');
+
+        if(p==="dashboard") { navigationModule.show("section-dashboard"); dashboardModule.init(); }
+        else if(p==="cadastros") { navigationModule.show("section-cadastros"); pacienteModule.initCadastros(); }
+        else if(p==="plano") { navigationModule.show("section-plano"); dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta); }
+        else if(p==="agendamento") { navigationModule.show("section-agendamento"); agendamentoModule.init(); }
+        else if(p==="financeiro") { navigationModule.show("section-financeiro"); financeiroModule.init(); }
+        else if(p==="relatorios") { navigationModule.show("section-relatorios"); relatoriosModule.init(); }
+        else if(p==="cadastro") navigationModule.show("section-cadastro")
+        else if(p==="login") navigationModule.show("section-login")
+        else { navigationModule.show("section-dashboard"); dashboardModule.init(); }
+      }
+
+      document.querySelectorAll('[data-route], #link-cadastro').forEach(a=>a.addEventListener("click", e=>{
+        e.preventDefault();
+        const r = a.getAttribute("data-route") || a.getAttribute("href");
+        routeTo(r);
+      }));
+
+      window.addEventListener("hashchange", renderRoute);
+
+      return {
+        show: show,
+        routeTo: routeTo,
+        renderRoute: renderRoute
+      };
+    })();
+
+
+
+    // --- Data Service Module ---
+    const dataServiceModule = (() => {
+      async function fetchPacientes(){ 
+        const { data, error } = await supabase.from("pacientes").select("*").order("id",{ascending:false}); 
+        if (error) {
+          console.error("Erro ao buscar pacientes:", error);
+          if (error.code === '42703') { // Undefined column
+            uiUtilityModule.toast("Erro: Colunas faltando no banco de dados. Execute o script SQL.");
+          } else {
+            uiUtilityModule.toast("Erro ao carregar pacientes: " + error.message);
+          }
+          return [];
+        }
+        return data||[]; 
+      }
+
+      async function fetchAgendamentos(){
+        const { data, error } = await supabase.from("agendamentos").select("*").order("data",{ascending:true});
+        if (error) {
+          console.error("Erro ao buscar agendamentos:", error);
+          uiUtilityModule.toast("Erro ao carregar agendamentos.");
+          return [];
+        }
+        return data||[];
+      }
+
+      async function fetchPagamentos(){
+        const { data, error } = await supabase.from("pagamentos").select("*").order("id",{ascending:false});
+        if (error) {
+          console.error("Erro ao buscar pagamentos:", error);
+          uiUtilityModule.toast("Erro ao carregar pagamentos.");
+          return [];
+        }
+        return data||[];
+      }
+
+      return {
+        fetchPacientes: fetchPacientes,
+        fetchAgendamentos: fetchAgendamentos,
+        fetchPagamentos: fetchPagamentos
+      };
+    })();
+
+    // --- Paciente Module ---
+    const pacienteModule = (() => {
+      const pacienteForm = document.getElementById("paciente-form");
+      const containerForm = document.getElementById("container-paciente-form");
+      const btnNovo = document.getElementById("btn-novo-paciente");
+      const btnCancel = document.getElementById("cancel-paciente");
+      
+      // Icons
+      const ICON_EDIT = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
+      const ICON_TRASH = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+      const ICON_EYE = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+
+      function renderPacientes(list){ 
+        const tbody=document.querySelector("#pacientes-table tbody"); 
+        tbody.innerHTML=""; 
+        list.forEach(p=>{
+          const tr=document.createElement("tr");
+          // Use div for truncation
+          const nomeDisplay = `<div class="text-truncate" title="${p.nome} ${p.sobrenome}">${p.nome} ${p.sobrenome}</div>`;
+          const emailDisplay = `<div class="text-truncate" title="${p.email}">${p.email}</div>`;
+          
+          tr.innerHTML=`
+            <td>${nomeDisplay}</td>
+            <td>${emailDisplay}</td>
+            <td>${p.telefone}</td>
+            <td>${p.planomeses||p.planoMeses||"-"} meses</td>
+            <td style="display:flex;gap:8px;justify-content:center">
+              <button class="action-btn btn-details" title="Detalhes" data-id="${p.id}">${ICON_EYE}</button>
+              <button class="action-btn btn-edit" title="Editar" data-id="${p.id}">${ICON_EDIT}</button>
+              <button class="action-btn delete btn-delete" title="Excluir" data-id="${p.id}">${ICON_TRASH}</button>
+            </td>`;
+          tbody.appendChild(tr)
+        }) 
+      }
+
+      async function initCadastros(){
+        const [p] = await Promise.all([dataServiceModule.fetchPacientes()]);
+        renderPacientes(p);
+      }
+
+      function toggleForm(show) {
+        if(show) {
+          containerForm.classList.remove("hidden");
+          btnNovo.classList.add("hidden");
+        } else {
+          containerForm.classList.add("hidden");
+          btnNovo.classList.remove("hidden");
+          pacienteForm.reset();
+          pacienteForm.querySelector('input[name="id"]').value = "";
+        }
+      }
+
+      function edit(id) {
+        dataServiceModule.fetchPacientes().then(list => {
+          const p = list.find(x => x.id === id);
+          if (p) {
+            // Populate form (handle lowercase keys)
+            const f = pacienteForm;
+            f.querySelector('[name="id"]').value = p.id;
+            f.querySelector('[name="nome"]').value = p.nome;
+            f.querySelector('[name="sobrenome"]').value = p.sobrenome;
+            f.querySelector('[name="datanascimento"]').value = p.datanascimento || p.dataNascimento;
+            f.querySelector('[name="email"]').value = p.email;
+            f.querySelector('[name="dataadesaoplano"]').value = p.dataadesaoplano || p.dataAdesaoPlano;
+            f.querySelector('[name="telefone"]').value = p.telefone;
+            f.querySelector('[name="endereco"]').value = p.endereco;
+            f.querySelector('[name="documento"]').value = p.documento;
+            f.querySelector('[name="numerocarteira"]').value = p.numerocarteira || p.numeroCarteira;
+            f.querySelector('[name="planomeses"]').value = p.planomeses || p.planoMeses;
+            
+            toggleForm(true);
+            window.scrollTo(0,0);
+          }
+        });
+      }
+
+      function viewDetails(id) {
+        dataServiceModule.fetchPacientes().then(list => {
+          const p = list.find(x => x.id === id);
+          if (p) {
+            const content = document.getElementById("detalhes-content");
+            const modal = document.getElementById("modal-detalhes");
+            content.innerHTML = `
+              <p><strong>Nome:</strong> ${p.nome} ${p.sobrenome}</p>
+              <p><strong>Email:</strong> ${p.email}</p>
+              <p><strong>Telefone:</strong> ${p.telefone}</p>
+              <p><strong>Data Nasc:</strong> ${new Date(p.datanascimento||p.dataNascimento).toLocaleDateString()}</p>
+              <p><strong>Endereço:</strong> ${p.endereco}</p>
+              <p><strong>Documento:</strong> ${p.documento}</p>
+              <hr style="border:0;border-top:1px solid var(--border);margin:10px 0">
+              <p><strong>Plano:</strong> ${p.planomeses||p.planoMeses} meses</p>
+              <p><strong>Carteira:</strong> ${p.numerocarteira||p.numeroCarteira}</p>
+              <p><strong>Adesão:</strong> ${new Date(p.dataadesaoplano||p.dataAdesaoPlano).toLocaleDateString()}</p>
+            `;
+            modal.classList.remove("hidden");
+          }
+        });
+      }
+
+      async function del(id) {
+        if(confirm("Tem certeza que deseja excluir?")) {
+          const { error } = await supabase.from("pacientes").delete().eq("id", id);
+          if(error) uiUtilityModule.toast("Erro ao excluir: " + error.message);
+          else {
+            uiUtilityModule.toast("Paciente excluído.");
+            initCadastros();
+          }
+        }
+      }
+
+      // Table Actions (Event Delegation)
+      const tableBody = document.querySelector("#pacientes-table tbody");
+      if(tableBody) {
+        tableBody.addEventListener("click", e => {
+          const btn = e.target.closest("button");
+          if(!btn) return;
+          const id = btn.dataset.id;
+          if(!id) return;
+
+          if(btn.classList.contains("btn-details")) viewDetails(id);
+          else if(btn.classList.contains("btn-edit")) edit(id);
+          else if(btn.classList.contains("btn-delete")) del(id);
+        });
+      }
+
+      // Event Listeners
+      if(btnNovo) btnNovo.addEventListener("click", () => toggleForm(true));
+      if(btnCancel) btnCancel.addEventListener("click", () => toggleForm(false));
+      
+      // Close modal details
+      document.getElementById("close-detalhes")?.addEventListener("click", () => {
+        document.getElementById("modal-detalhes").classList.add("hidden");
+      });
+
+      if(pacienteForm) pacienteForm.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(pacienteForm);
+        const rawId=fd.get("id");
+        const id = rawId ? rawId.trim() : "";
+        const body = Object.fromEntries(fd.entries());
+        
+        // --- STRICT SANITIZATION ---
+        Object.keys(body).forEach(key => {
+          if (typeof body[key] === 'string' && body[key].trim() === "") {
+            body[key] = null;
+          }
+        });
+
+        // Ensure ID is completely removed if null/empty
+        if(!body.id) delete body.id;
+        
+        // Handle integer fields explicitly
+        if(body.planomeses) {
+          body.planomeses = parseInt(body.planomeses);
+        }
+
+        try {
+          const { error } = id ? await supabase.from("pacientes").update(body).eq("id",id) : await supabase.from("pacientes").insert([body]);
+          if(error) throw error;
+          
+          uiUtilityModule.toast("Paciente salvo com sucesso!"); 
+          toggleForm(false); // Hide form after save
+          initCadastros(); 
+          dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta);
+        } catch (err) {
+          console.error(err);
+          if (err.code === '22P02') { 
+             uiUtilityModule.toast("Erro: Formato de dados inválido.");
+          } else {
+             uiUtilityModule.toast("Erro ao salvar: " + err.message);
+          }
+        }
+      });
+
+      return {
+        initCadastros: initCadastros,
+        renderPacientes: renderPacientes,
+        edit: edit,
+        del: del,
+        viewDetails: viewDetails
+      };
+    })();
+
+
+    // --- Plano Univitta Module ---
+    const planoUnivittaModule = (() => {
+      function renderPlanoUnivitta(list){ 
+        const tbody=document.querySelector("#plano-table tbody"); 
+        if(!tbody) return; 
+        tbody.innerHTML=""; 
+        list.forEach(p=>{
+          // Handle both camelCase and lowercase keys for compatibility
+          const dA = p.dataadesaoplano || p.dataAdesaoPlano;
+          const pM = p.planomeses || p.planoMeses;
+          
+          const dataAdesao = dA ? new Date(dA).toLocaleDateString("pt-BR") : "-";
+          const diaVenc = dA ? new Date(dA).getDate() : "-";
+          const tr=document.createElement("tr");
+          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.documento}</td><td>${p.email||"-"}</td><td>${p.telefone||"-"}</td><td>${p.endereco||"-"}</td><td>${dataAdesao}</td><td>${pM||"-"} meses</td><td>${diaVenc}</td>`;
+          tbody.appendChild(tr)
+        }) 
+      }
+
+      return {
+        renderPlanoUnivitta: renderPlanoUnivitta
+      };
+    })();
+
+    // --- Agendamento Module ---
+    const agendamentoModule = (() => {
+      const viewSel=document.getElementById("calendar-view"); 
+      const dateSel=document.getElementById("calendar-date");
+      const formAg=document.getElementById("agendamento-form");
+      const novoAgendamentoBtn = document.getElementById("novo-agendamento");
+      const cancelAgendamentoBtn = document.getElementById("cancel-agendamento");
+
+      async function updateSelectors(){
+        const [p] = await Promise.all([dataServiceModule.fetchPacientes()]);
+        const selP = document.getElementById("sel-paciente");
+        if(selP) selP.innerHTML = '<option value="">Selecione...</option>' + p.map(x=>`<option value="${x.id}">${x.nome} ${x.sobrenome}</option>`).join("");
+      }
+
+      async function refreshCal(){ 
+        const data = await dataServiceModule.fetchAgendamentos();
+        const cal = document.getElementById("calendar");
+        if(!cal) return;
+        cal.innerHTML = '<div class="card" style="padding:var(--spacing-md); text-align:center;">Carregando agenda...</div>';
+        // Basic list view for now
+        cal.innerHTML = (data||[]).map(a=>`<div class="card" style="margin-bottom:var(--spacing-xs); padding:var(--spacing-sm)"><b>${a.data} ${a.hora}</b> - ${a.especialidade} (Sala ${a.sala||"1"})</div>`).join("");
+      }
+
+      function init(){
+        if(dateSel) dateSel.value = new Date().toISOString().slice(0,10);
+        refreshCal(); 
+        updateSelectors();
+      }
+
+      // Event Listeners
+      if(formAg) formAg.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(formAg);
+        const body = Object.fromEntries(fd.entries());
+        
+        // --- STRICT SANITIZATION ---
+        Object.keys(body).forEach(key => {
+          if (typeof body[key] === 'string' && body[key].trim() === "") {
+            body[key] = null;
+          }
+        });
+
+        if (!body.paciente_id) {
+          uiUtilityModule.toast("Por favor, selecione um paciente.");
+          return;
+        }
+
+        const { error } = await supabase.from("agendamentos").insert([body]);
+        if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Agendado!"); document.getElementById("modal").classList.add("hidden"); refreshCal(); }
+      });
+      if(novoAgendamentoBtn) novoAgendamentoBtn.addEventListener("click", ()=>document.getElementById("modal").classList.remove("hidden"));
+      if(cancelAgendamentoBtn) cancelAgendamentoBtn.addEventListener("click", ()=>document.getElementById("modal").classList.add("hidden"));
+
+      return {
+        init: init,
+        refreshCal: refreshCal, // Export if needed by other modules
+        updateSelectors: updateSelectors // Export if needed by other modules
+      };
+    })();
+
+
+    // Events
+    document.querySelectorAll('[data-route], #link-cadastro').forEach(a=>a.addEventListener("click", e=>{
+      e.preventDefault();
+      const r = a.getAttribute("data-route") || a.getAttribute("href");
+      navigationModule.routeTo(r);
+    }));
+
+    window.addEventListener("hashchange", navigationModule.renderRoute);
+    
+    // Auth Actions
+    // const loginForm = document.getElementById("login-form");
+    // if(loginForm) loginForm.addEventListener("submit", async e=>{
+    //   e.preventDefault();
+    //   const fd=new FormData(loginForm);
+    //   const { error } = await supabase.auth.signInWithPassword({ email:fd.get("email"), password:fd.get("senha") });
+    //   if(error) { uiUtilityModule.toast(error.message); return; }
+    //   await updateNav(); navigationModule.routeTo("#dashboard"); uiUtilityModule.toast("Bem-vindo!");
+    // });
+
+    // const signupForm = document.getElementById("signup-form");
+    // if(signupForm) signupForm.addEventListener("submit", async e=>{
+    //   e.preventDefault();
+    //   const fd=new FormData(signupForm);
+    //   const { error } = await supabase.auth.signUp({ email:fd.get("email"), password:fd.get("senha"), options:{ data:{ nome:fd.get("nome"), sobrenome:fd.get("sobrenome") } } });
+    //   if(error) { uiUtilityModule.toast(error.message); return; }
+    //   uiUtilityModule.toast("Cadastro solicitado! Verifique seu e-mail."); navigationModule.routeTo("#login");
+    // });
+
+    // if(logoutBtn) logoutBtn.addEventListener("click", async ()=>{ await supabase.auth.signOut(); updateNav(); navigationModule.routeTo("#login"); });
+
+    // Forms
+    // Moved to pacienteModule
+    // pacienteForm.addEventListener("submit", async e=>{
+    //   e.preventDefault();
+    //   const fd=new FormData(pacienteForm);
+    //   const id=fd.get("id");
+    //   const body=Object.fromEntries(fd.entries());
+    //   if(body.planoMeses) body.planoMeses = parseInt(body.planoMeses);
+    //   const { error } = id ? await supabase.from("pacientes").update(body).eq("id",id) : await supabase.from("pacientes").insert([body]);
+    //   if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Paciente salvo"); pacienteForm.reset(); initCadastros(); dataServiceModule.fetchPacientes().then(planoUnivittaModule.renderPlanoUnivitta); }
+    // });
+
+
+
+    // --- UI/Utility Module ---
+    const uiUtilityModule = (() => {
+      const toggleBtn = document.getElementById("theme-toggle");
+
+      function setTheme(t){ document.documentElement.setAttribute("data-theme", t); localStorage.setItem("theme", t) }
+      function toast(t){ const d=document.createElement("div"); d.className="toast"; d.textContent=t; d.setAttribute("role", "alert"); document.body.appendChild(d); setTimeout(()=>d.remove(), 3000) }
+
+      // Init theme
+      setTheme(localStorage.getItem("theme")||"dark");
+      // Event listener for theme toggle
+      if(toggleBtn) toggleBtn.addEventListener("click", ()=>{ const cur=document.documentElement.getAttribute("data-theme"); setTheme(cur==="dark"?"light":"dark") });
+
+      return {
+        setTheme: setTheme,
+        toast: toast
+      };
+    })();
+
+    // Init
+    (async ()=>{
+      try {
+        if(typeof navigationModule === 'undefined') throw new Error("Navigation Module not loaded");
+        if(typeof dashboardModule === 'undefined') throw new Error("Dashboard Module not loaded");
+        
+        await navigationModule.renderRoute();
+        // authModule.updateNav is called inside renderRoute usually, but let's ensure
+        // await authModule.updateNav(); // renderRoute calls it
+      } catch (e) {
+        console.error("Startup Error:", e);
+        document.body.innerHTML += `<div style="color:red;padding:20px;text-align:center"><h1>Erro ao iniciar o sistema</h1><p>${e.message}</p></div>`;
+      }
+    })();
+
+    // Calendar & Finance (Simplified versions of previously working code)
+    // Moved to agendamentoModule
+    // const viewSel=document.getElementById("calendar-view"); const dateSel=document.getElementById("calendar-date");
+    // if(dateSel) dateSel.value = new Date().toISOString().slice(0,10);
+    // async function refreshCal(){ 
+    //   const data = await dataServiceModule.fetchAgendamentos();
+    //   const cal = document.getElementById("calendar");
+    //   if(!cal) return;
+    //   cal.innerHTML = '<div class="card" style="padding:var(--spacing-md); text-align:center;">Carregando agenda...</div>';
+    //   // Basic list view for now
+    //   cal.innerHTML = (data||[]).map(a=>`<div class="card" style="margin-bottom:var(--spacing-xs); padding:var(--spacing-sm)"><b>${a.data} ${a.hora}</b> - ${a.especialidade} (Sala ${a.sala||"1"})</div>`).join("");
+    // }
+    // const formAg=document.getElementById("agendamento-form");
+    // if(formAg) formAg.addEventListener("submit", async e=>{
+    //   e.preventDefault();
+    //   const fd=new FormData(formAg);
+    //   const { error } = await supabase.from("agendamentos").insert([Object.fromEntries(fd.entries())]);
+    //   if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Agendado!"); document.getElementById("modal").classList.add("hidden"); refreshCal(); }
+    // });
+    // document.getElementById("novo-agendamento")?.addEventListener("click", ()=>document.getElementById("modal").classList.remove("hidden"));
+    // document.getElementById("cancel-agendamento")?.addEventListener("click", ()=>document.getElementById("modal").classList.add("hidden"));
+
+    // --- Financeiro Module ---
+    const financeiroModule = (() => {
+      const form = document.getElementById("pagamento-form");
+      
+      async function loadPay(){ 
+        const data = await dataServiceModule.fetchPagamentos(); 
+        renderPay(data||[]); 
+      }
+
+      function renderPay(list){ 
+        const tb = document.querySelector("#pagamentos-table tbody");
+        if(tb) tb.innerHTML = list.map(p=>`<tr><td>${p.consulta_id||"-"}</td><td>${p.convenio||"-"}</td><td>${p.procedimento||"-"}</td><td>R$ ${p.valor}</td><td>${new Date(p.data||p.created_at||Date.now()).toLocaleDateString()}</td></tr>`).join("");
+      }
+
+      if(form) form.addEventListener("submit", async e=>{
+        e.preventDefault();
+        const fd=new FormData(form);
+        const body = Object.fromEntries(fd.entries());
+        const payload = { ...body, data: new Date().toISOString() };
+        
+        const { error } = await supabase.from("pagamentos").insert([payload]);
+        if(error) uiUtilityModule.toast(error.message); 
+        else { 
+          uiUtilityModule.toast("Recebido!"); 
+          form.reset(); 
+          loadPay(); 
+        }
+      });
+
+      return {
+        init: loadPay
+      };
+    })();
+
+    // --- Relatorios Module ---
+    const relatoriosModule = (() => {
+      async function loadKPIs(){
+        const [pac, pay] = await Promise.all([dataServiceModule.fetchPacientes(), dataServiceModule.fetchPagamentos()]);
+        const total = (pay||[]).reduce((acc,v)=>acc+Number(v.valor),0);
+        const box = document.getElementById("kpis-rel");
+        if(box) box.innerHTML = `
+          <div class="card"><div class="small">Total Pacientes</div><div style="font-size:var(--font-size-xl)">${pac.length}</div></div>
+          <div class="card"><div class="small">Receita Total</div><div style="font-size:var(--font-size-xl);color:var(--success)">R$ ${total.toFixed(2)}</div></div>
+        `;
+      }
+
+      const exportBtn = document.getElementById("export-csv");
+      if(exportBtn) exportBtn.addEventListener("click", async ()=>{
+        const { data } = await supabase.from("pagamentos").select("*");
+        if(!data) return;
+        const csv = "Data,Descrição,Valor\n" + data.map(r=>`${r.data||r.created_at},${r.procedimento},${r.valor}`).join("\n");
+        const blob = new Blob([csv], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a"); a.href=url; a.download="relatorio.csv"; a.click();
+      });
+
+      return {
+        init: loadKPIs
+      };
+    })();
+
+  </script>
+</body>
 </html>

@@ -208,7 +208,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         </div>
         <div style="overflow-x:auto">
           <table id="plano-table">
-            <thead><tr><th>Paciente Completo</th><th>Documento</th><th>Email</th><th>Telefone</th><th>Endereço</th><th>Data Adesão</th><th>Tempo Contratado</th><th>Dia Vencimento</th></tr></thead>
+            <thead><tr><th>Paciente Completo</th><th>Documento</th><th>Email</th><th>Telefone</th><th>Data Adesão</th><th>Tempo Contratado</th><th>Vencimento</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -795,9 +795,18 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
           const pM = p.planomeses || p.planoMeses;
           
           const dataAdesao = dA ? new Date(dA).toLocaleDateString("pt-BR") : "-";
-          const diaVenc = dA ? new Date(dA).getDate() : "-";
+          
+          let dataVenc = "-";
+          if (dA && pM) {
+            const date = new Date(dA);
+            date.setMonth(date.getMonth() + parseInt(pM));
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            dataVenc = `${day}/${month}`;
+          }
+
           const tr=document.createElement("tr");
-          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.documento}</td><td>${p.email||"-"}</td><td>${p.telefone||"-"}</td><td>${p.endereco||"-"}</td><td>${dataAdesao}</td><td>${pM||"-"} meses</td><td>${diaVenc}</td>`;
+          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.documento}</td><td>${p.email||"-"}</td><td>${p.telefone||"-"}</td><td>${dataAdesao}</td><td>${pM||"-"} meses</td><td>${dataVenc}</td>`;
           tbody.appendChild(tr)
         }) 
       }
