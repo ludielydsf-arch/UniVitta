@@ -381,15 +381,35 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
           dashKpis.innerHTML = "";
           const activeCount = patients.filter(x => x.planomeses || x.planoMeses).length;
           
+          // Calculate expiring in 7 days
+          const today = new Date();
+          today.setHours(0,0,0,0);
+          const nextWeek = new Date(today);
+          nextWeek.setDate(today.getDate() + 7);
+
+          const expiringCount = patients.filter(p => {
+            const adesao = p.dataadesaoplano || p.dataAdesaoPlano;
+            const meses = p.planomeses || p.planoMeses;
+            if (!adesao || !meses) return false;
+            
+            const expiryDate = new Date(adesao);
+            expiryDate.setMonth(expiryDate.getMonth() + parseInt(meses));
+            expiryDate.setHours(0,0,0,0);
+            
+            return expiryDate >= today && expiryDate <= nextWeek;
+          }).length;
+          
           // Icons (SVG)
           const ICON_USERS = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`;
           const ICON_CALENDAR = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`;
           const ICON_HEART = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>`;
+          const ICON_CLOCK = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`;
 
           const items = [
-            { label: "Pacientes Totais", value: patients.length, icon: ICON_USERS, color: "var(--primary)", trend: "+12%" },
-            { label: "Consultas Agendadas", value: appointments.length, icon: ICON_CALENDAR, color: "#a855f7", trend: "+5%" },
-            { label: "Planos Ativos", value: activeCount, icon: ICON_HEART, color: "#10b981", trend: "+8%" }
+            { label: "Pacientes Totais", value: patients.length, icon: ICON_USERS, color: "var(--primary)", trend: "+12%", trendClass: "trend-up" },
+            { label: "Consultas Agendadas", value: appointments.length, icon: ICON_CALENDAR, color: "#a855f7", trend: "+5%", trendClass: "trend-up" },
+            { label: "Planos Ativos", value: activeCount, icon: ICON_HEART, color: "#10b981", trend: "+8%", trendClass: "trend-up" },
+            { label: "Vencendo (7 dias)", value: expiringCount, icon: ICON_CLOCK, color: "#f59e0b", trend: "Atenção", trendClass: "trend-down" }
           ];
 
           items.forEach(item => {
@@ -398,7 +418,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
             c.innerHTML = `
               <div style="display:flex;justify-content:space-between;align-items:start">
                 <div class="stat-icon" style="background:${item.color}20;color:${item.color}">${item.icon}</div>
-                <div class="stat-trend trend-up">${item.trend}</div>
+                <div class="stat-trend ${item.trendClass}">${item.trend}</div>
               </div>
               <div class="stat-value">${item.value}</div>
               <div class="stat-label">${item.label}</div>
