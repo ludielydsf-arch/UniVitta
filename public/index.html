@@ -277,7 +277,16 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
       const signupForm = document.getElementById("signup-form");
 
       async function updateNav(){ 
-        const { data: { session } } = await supabase.auth.getSession(); 
+        const { data: { session }, error } = await supabase.auth.getSession(); 
+        
+        if (error) {
+          if (error.message.includes("Refresh Token")) {
+            await supabase.auth.signOut();
+            location.hash = "#login";
+            return;
+          }
+        }
+
         if(session){
           nav.style.display = "flex"; 
           document.getElementById("section-login").classList.add("hidden"); // Hide login section
@@ -322,26 +331,37 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
       const dashUpcomingBody = document.querySelector("#dash-upcoming tbody");
 
       async function loadAndRenderDashboard() {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session) return;
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error || !session) {
+          if(error) console.error("Auth error:", error);
+          // If refresh token invalid, clear session
+          if(error && error.message.includes("Refresh Token")) {
+             await supabase.auth.signOut();
+             location.reload();
+          }
+          return;
+        }
 
         const [pac, ag] = await Promise.all([
-          supabase.from("pacientes").select("*", { count: "exact" }),
+          supabase.from("pacientes").select("*"),
           supabase.from("agendamentos").select("*").order("data", { ascending: true }).limit(5)
         ]);
 
-        renderKPIs(pac.count, ag.data);
-        renderUpcomingAppointments(ag.data);
-        renderPerformanceChart(pac.count, ag.data);
+        const patients = pac.data || [];
+        const appointments = ag.data || [];
+
+        renderKPIs(patients, appointments);
+        renderUpcomingAppointments(appointments);
+        renderPerformanceChart(patients.length, appointments);
       }
 
-      function renderKPIs(patientCount, appointments) {
+      function renderKPIs(patients, appointments) {
         if (dashKpis) {
           dashKpis.innerHTML = "";
           const items = [
-            ["Pacientes", patientCount],
-            ["Consultas", (appointments || []).length],
-            ["Ativos", (patientCount || []).filter(x => x.planoMeses).length]
+            ["Pacientes", patients.length],
+            ["Consultas", appointments.length],
+            ["Ativos", patients.filter(x => x.planomeses || x.planoMeses).length]
           ];
           items.forEach(([t, v]) => {
             const c = document.createElement("div");
