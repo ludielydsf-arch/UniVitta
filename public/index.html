@@ -930,8 +930,19 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
     })();
 
     // Init
-    navigationModule.renderRoute();
-    authModule.updateNav();
+    (async ()=>{
+      try {
+        if(typeof navigationModule === 'undefined') throw new Error("Navigation Module not loaded");
+        if(typeof dashboardModule === 'undefined') throw new Error("Dashboard Module not loaded");
+        
+        await navigationModule.renderRoute();
+        // authModule.updateNav is called inside renderRoute usually, but let's ensure
+        // await authModule.updateNav(); // renderRoute calls it
+      } catch (e) {
+        console.error("Startup Error:", e);
+        document.body.innerHTML += `<div style="color:red;padding:20px;text-align:center"><h1>Erro ao iniciar o sistema</h1><p>${e.message}</p></div>`;
+      }
+    })();
 
     // Calendar & Finance (Simplified versions of previously working code)
     // Moved to agendamentoModule
