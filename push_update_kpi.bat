@@ -1,9 +1,0 @@
-@echo off
-set PATH=%PATH%;C:\Program Files\Git\cmd
-echo Adding files...
-git add .
-echo Committing...
-git commit -m "UI: Add expiring plans KPI to dashboard"
-echo Pushing...
-git push origin main
-echo Done.
