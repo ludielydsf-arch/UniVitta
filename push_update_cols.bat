@@ -1,0 +1,9 @@
+@echo off
+set PATH=%PATH%;C:\Program Files\Git\cmd
+echo Adding files...
+git add .
+echo Committing...
+git commit -m "UI: Move Documento column from Plano to Pacientes table"
+echo Pushing...
+git push origin main
+echo Done.

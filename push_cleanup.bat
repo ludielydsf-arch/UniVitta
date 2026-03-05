@@ -1,9 +1,0 @@
-@echo off
-set PATH=%PATH%;C:\Program Files\Git\cmd
-echo Adding changes...
-git add .
-echo Committing cleanup...
-git commit -m "Cleanup: Remove temporary deployment scripts"
-echo Pushing to GitHub...
-git push origin main
-echo Done.
