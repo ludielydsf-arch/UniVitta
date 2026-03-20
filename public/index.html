@@ -95,6 +95,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         <a class="secondary" data-route="#agendamento">Agendamento</a>
         <a class="secondary" data-route="#financeiro">Financeiro</a>
         <a class="secondary" data-route="#relatorios">Relatórios</a>
+        <a class="secondary" data-route="#autorizacao">Autorização</a>
         <button class="danger logout" id="logout">Sair</button>
       </nav>
     </aside>
@@ -240,6 +241,11 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
           <div class="grid">
             <div class="field"><label>Paciente</label><select name="paciente_id" id="sel-paciente" required></select></div>
             <div class="field">
+              <label>Nº Atendimento (mês)</label>
+              <input id="numero-atendimento" value="-" readonly>
+              <div class="small">Limite do plano: 4/mês</div>
+            </div>
+            <div class="field">
               <label>Especialidade / Procedimento</label>
               <select name="especialidade" required>
                 <option value="">Selecione</option>
@@ -298,9 +304,24 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
       </div>
     </section>
 
+    <section id="section-autorizacao" class="hidden">
+      <div class="card">
+        <h2>Senha de Autorização</h2>
+        <div id="authz-status" class="small"></div>
+        <form id="authz-form" style="margin-top:var(--spacing-md)">
+          <div class="grid">
+            <div class="field"><label>Senha atual</label><input type="password" name="current" autocomplete="current-password"></div>
+            <div class="field"><label>Nova senha</label><input type="password" name="next" required autocomplete="new-password"></div>
+            <div class="field"><label>Confirmar nova senha</label><input type="password" name="confirm" required autocomplete="new-password"></div>
+          </div>
+          <button class="primary" type="submit">Salvar senha</button>
+        </form>
+        <div class="small" style="margin-top:var(--spacing-md)">Após 4 atendimentos no mês, será exigida a senha para liberar atendimentos extras.</div>
+      </div>
+    </section>
+
  
     </main>
-  </div>
 
   <script type="module">
     const { createClient } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm")
@@ -568,6 +589,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         else if(p==="agendamento") { navigationModule.show("section-agendamento"); agendamentoModule.init(); }
         else if(p==="financeiro") { navigationModule.show("section-financeiro"); financeiroModule.init(); }
         else if(p==="relatorios") { navigationModule.show("section-relatorios"); relatoriosModule.init(); }
+        else if(p==="autorizacao") { navigationModule.show("section-autorizacao"); authzModule.init(); }
         else if(p==="cadastro") navigationModule.show("section-cadastro")
         else if(p==="login") navigationModule.show("section-login")
         else { navigationModule.show("section-dashboard"); dashboardModule.init(); }
@@ -858,6 +880,49 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
       const formAg=document.getElementById("agendamento-form");
       const novoAgendamentoBtn = document.getElementById("novo-agendamento");
       const cancelAgendamentoBtn = document.getElementById("cancel-agendamento");
+      const numeroAtendimentoEl = document.getElementById("numero-atendimento");
+
+      function toYMD(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
+      }
+
+      function getMonthRange(dateStr) {
+        const d = new Date(dateStr);
+        const start = new Date(d.getFullYear(), d.getMonth(), 1);
+        const end = new Date(d.getFullYear(), d.getMonth() + 1, 1);
+        return { start: toYMD(start), end: toYMD(end) };
+      }
+
+      async function countAtendimentosMes(pacienteId, dateStr) {
+        const { start, end } = getMonthRange(dateStr);
+        const { count, error } = await supabase
+          .from("agendamentos")
+          .select("id", { count: "exact", head: true })
+          .eq("paciente_id", pacienteId)
+          .gte("data", start)
+          .lt("data", end);
+        if (error) {
+          console.error(error);
+          return 0;
+        }
+        return count || 0;
+      }
+
+      async function updateNumeroAtendimento() {
+        if (!formAg || !numeroAtendimentoEl) return 0;
+        const pacienteId = formAg.querySelector('[name="paciente_id"]')?.value;
+        const dateStr = formAg.querySelector('[name="data"]')?.value;
+        if (!pacienteId || !dateStr) {
+          numeroAtendimentoEl.value = "-";
+          return 0;
+        }
+        const count = await countAtendimentosMes(pacienteId, dateStr);
+        numeroAtendimentoEl.value = String(count + 1);
+        return count;
+      }
 
       async function updateSelectors(){
         const [p] = await Promise.all([dataServiceModule.fetchPacientes()]);
@@ -898,10 +963,25 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
           return;
         }
 
+        const limiteMes = 4;
+        if (body.data) {
+          const count = await countAtendimentosMes(body.paciente_id, body.data);
+          if (numeroAtendimentoEl) numeroAtendimentoEl.value = String(count + 1);
+          if (count >= limiteMes) {
+            const ok = await authzModule.requestAuthorization();
+            if (!ok) return;
+          }
+        }
+
         const { error } = await supabase.from("agendamentos").insert([body]);
         if(error) uiUtilityModule.toast(error.message); else { uiUtilityModule.toast("Agendado!"); document.getElementById("modal").classList.add("hidden"); refreshCal(); }
       });
-      if(novoAgendamentoBtn) novoAgendamentoBtn.addEventListener("click", ()=>document.getElementById("modal").classList.remove("hidden"));
+      if(formAg) {
+        formAg.querySelector('[name="paciente_id"]')?.addEventListener("change", updateNumeroAtendimento);
+        formAg.querySelector('[name="data"]')?.addEventListener("change", updateNumeroAtendimento);
+      }
+
+      if(novoAgendamentoBtn) novoAgendamentoBtn.addEventListener("click", async ()=>{ document.getElementById("modal").classList.remove("hidden"); await updateNumeroAtendimento(); });
       if(cancelAgendamentoBtn) cancelAgendamentoBtn.addEventListener("click", ()=>document.getElementById("modal").classList.add("hidden"));
 
       return {
@@ -971,6 +1051,88 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
       return {
         setTheme: setTheme,
         toast: toast
+      };
+    })();
+
+    const authzModule = (() => {
+      const STORAGE_KEY = "univitta_authz_hash_v1";
+      const form = document.getElementById("authz-form");
+      const statusEl = document.getElementById("authz-status");
+
+      async function sha256(text) {
+        const enc = new TextEncoder().encode(text);
+        const buf = await crypto.subtle.digest("SHA-256", enc);
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+      }
+
+      function hasPassword() {
+        return !!localStorage.getItem(STORAGE_KEY);
+      }
+
+      function renderStatus() {
+        if (!statusEl) return;
+        statusEl.textContent = hasPassword()
+          ? "Senha definida. Necessária para liberar atendimentos extras após 4/mês."
+          : "Nenhuma senha definida. Defina uma senha para liberar atendimentos extras.";
+      }
+
+      async function verify(pass) {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return false;
+        const hash = await sha256(pass);
+        return hash === stored;
+      }
+
+      async function requestAuthorization() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) {
+          uiUtilityModule.toast("Defina a senha de autorização na aba Autorização.");
+          return false;
+        }
+        const pass = prompt("Digite a senha de autorização para liberar este atendimento extra:");
+        if (pass === null) return false;
+        const ok = await verify(pass);
+        if (!ok) uiUtilityModule.toast("Senha de autorização incorreta.");
+        return ok;
+      }
+
+      if (form) form.addEventListener("submit", async e => {
+        e.preventDefault();
+        const fd = new FormData(form);
+        const current = String(fd.get("current") || "");
+        const next = String(fd.get("next") || "");
+        const confirm = String(fd.get("confirm") || "");
+
+        if (next.length < 4) {
+          uiUtilityModule.toast("A nova senha deve ter pelo menos 4 caracteres.");
+          return;
+        }
+        if (next !== confirm) {
+          uiUtilityModule.toast("Confirmação de senha não confere.");
+          return;
+        }
+        if (hasPassword()) {
+          const ok = await verify(current);
+          if (!ok) {
+            uiUtilityModule.toast("Senha atual incorreta.");
+            return;
+          }
+        }
+
+        const hash = await sha256(next);
+        localStorage.setItem(STORAGE_KEY, hash);
+        form.reset();
+        uiUtilityModule.toast("Senha de autorização salva.");
+        renderStatus();
+      });
+
+      function init() {
+        renderStatus();
+      }
+
+      return {
+        init,
+        requestAuthorization
       };
     })();
 
