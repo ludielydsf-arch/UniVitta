@@ -239,7 +239,21 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         <form id="agendamento-form">
           <div class="grid">
             <div class="field"><label>Paciente</label><select name="paciente_id" id="sel-paciente" required></select></div>
-            <div class="field"><label>Especialidade / Procedimento</label><input name="especialidade" required></div>
+            <div class="field">
+              <label>Especialidade / Procedimento</label>
+              <select name="especialidade" required>
+                <option value="">Selecione</option>
+                <option value="Psicologia">Psicologia</option>
+                <option value="Nutrição">Nutrição</option>
+                <option value="Fonoaudióloga">Fonoaudióloga</option>
+                <option value="Fisioterapia">Fisioterapia</option>
+                <option value="Dermatologia">Dermatologia</option>
+                <option value="Endocrinologia">Endocrinologia</option>
+                <option value="Pediatria">Pediatria</option>
+                <option value="Clínico Geral">Clínico Geral</option>
+                <option value="Psiquiatria">Psiquiatria</option>
+              </select>
+            </div>
             <div class="field"><label>Sala</label><input name="sala"></div>
             <div class="field"><label>Data</label><input type="date" name="data" required></div>
             <div class="field"><label>Hora</label><input type="time" name="hora" required></div>
