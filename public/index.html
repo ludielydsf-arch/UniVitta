@@ -74,6 +74,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
 .upcoming-name{font-weight:600;font-size:14px}
 .upcoming-meta{font-size:12px;color:var(--muted);display:flex;gap:10px}
 .status-chip{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(125,211,252,0.15);color:var(--primary);text-transform:uppercase;font-weight:600}
+.text-truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
   </style>
 
 </head>
@@ -178,6 +179,18 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
                   <option value="6">6 meses</option>
                 </select>
               </div>
+              <div class="field">
+                <label>Dia de Vencimento (Plano)</label>
+                <select name="diavencimentoplano">
+                  <option value="">Selecione</option>
+                  <option value="5">Dia 5</option>
+                  <option value="10">Dia 10</option>
+                  <option value="15">Dia 15</option>
+                  <option value="20">Dia 20</option>
+                  <option value="25">Dia 25</option>
+                  <option value="30">Dia 30</option>
+                </select>
+              </div>
             </div>
             <div class="row" style="margin-top:var(--spacing-md)">
               <button class="primary" type="submit">Salvar Paciente</button>
@@ -225,7 +238,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         </div>
         <div style="overflow-x:auto">
           <table id="plano-table">
-            <thead><tr><th>Paciente Completo</th><th>Email</th><th>Telefone</th><th>Data Adesão</th><th>Tempo Contratado</th><th>Vencimento</th></tr></thead>
+            <thead><tr><th>Paciente Completo</th><th>Documento</th><th>Email</th><th>Telefone</th><th>Endereço</th><th>Data Adesão</th><th>Tempo Contratado</th><th>Dia Vencimento</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -812,6 +825,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
             f.querySelector('[name="documento"]').value = p.documento;
             f.querySelector('[name="numerocarteira"]').value = p.numerocarteira || p.numeroCarteira;
             f.querySelector('[name="planomeses"]').value = p.planomeses || p.planoMeses;
+            f.querySelector('[name="diavencimentoplano"]').value = p.diavencimentoplano || p.diaVencimentoPlano || "";
             
             toggleForm(true);
             window.scrollTo(0,0);
@@ -834,6 +848,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
               <p><strong>Documento:</strong> ${p.documento}</p>
               <hr style="border:0;border-top:1px solid var(--border);margin:10px 0">
               <p><strong>Plano:</strong> ${p.planomeses||p.planoMeses} meses</p>
+              <p><strong>Vencimento:</strong> Dia ${p.diavencimentoplano||p.diaVencimentoPlano||"-"}</p>
               <p><strong>Carteira:</strong> ${p.numerocarteira||p.numeroCarteira}</p>
               <p><strong>Adesão:</strong> ${new Date(p.dataadesaoplano||p.dataAdesaoPlano).toLocaleDateString()}</p>
             `;
@@ -955,18 +970,10 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
           const pM = p.planomeses || p.planoMeses;
           
           const dataAdesao = dA ? new Date(dA).toLocaleDateString("pt-BR") : "-";
+          const diaVenc = p.diavencimentoplano || p.diaVencimentoPlano || "-";
           
-          let dataVenc = "-";
-          if (dA && pM) {
-            const date = new Date(dA);
-            date.setMonth(date.getMonth() + parseInt(pM));
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            dataVenc = `${day}/${month}`;
-          }
-
           const tr=document.createElement("tr");
-          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.email||"-"}</td><td>${p.telefone||"-"}</td><td>${dataAdesao}</td><td>${pM||"-"} meses</td><td>${dataVenc}</td>`;
+          tr.innerHTML=`<td>${p.nome} ${p.sobrenome}</td><td>${p.documento}</td><td>${p.email||"-"}</td><td>${p.telefone||"-"}</td><td><div class="text-truncate" title="${p.endereco}">${p.endereco}</div></td><td>${dataAdesao}</td><td>${pM||"-"} meses</td><td>${diaVenc}</td>`;
           tbody.appendChild(tr)
         }) 
       }

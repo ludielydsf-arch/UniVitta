@@ -1,0 +1,9 @@
+@echo off
+set PATH=%PATH%;C:\Program Files\Git\cmd
+echo Adicionando arquivos...
+git add .
+echo Criando commit...
+git commit -m "UI: Organização do layout do endereço e adição de seleção de dia de vencimento (5, 10, 15, 20, 25, 30)"
+echo Enviando para o GitHub...
+git push origin main
+echo Pronto!
