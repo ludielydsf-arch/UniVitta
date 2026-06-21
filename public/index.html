@@ -1311,6 +1311,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
 
     const authzModule = (() => {
       const STORAGE_KEY = "univitta_authz_hash_v1";
+      const DEFAULT_PASSWORD = "123456";
       const form = document.getElementById("authz-form");
       const statusEl = document.getElementById("authz-status");
 
@@ -1318,6 +1319,13 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         const enc = new TextEncoder().encode(text);
         const buf = await crypto.subtle.digest("SHA-256", enc);
         return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+      }
+
+      async function setDefaultPassword() {
+        if (!localStorage.getItem(STORAGE_KEY)) {
+          const hash = await sha256(DEFAULT_PASSWORD);
+          localStorage.setItem(STORAGE_KEY, hash);
+        }
       }
 
       function hasPassword() {
@@ -1339,6 +1347,7 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
       }
 
       async function requestAuthorization() {
+        await setDefaultPassword();
         const stored = localStorage.getItem(STORAGE_KEY);
         if (!stored) {
           uiUtilityModule.toast("Defina a senha de autorização na aba Autorização.");
@@ -1381,7 +1390,8 @@ th,td{padding:var(--spacing-sm) var(--spacing-md);text-align:left}
         renderStatus();
       });
 
-      function init() {
+      async function init() {
+        await setDefaultPassword();
         renderStatus();
       }
 
